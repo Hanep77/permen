@@ -1,30 +1,82 @@
-'use client';
-
 import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import {
     LayoutDashboard,
     Settings,
-    Users,
-    BarChart2,
-    FileText,
     LogOut,
     Menu,
     X,
-    ChevronRight,
     PanelLeft,
+    Mail,
+    CircleCheck,
+    SquareTerminal,
+    Calendar,
+    Flag,
+    Target,
+    Repeat2,
+    BookOpen,
+    FileQuestion,
+    Wallet,
+    Users,
+    Search,
+    NotepadText,
+    Folder,
+    NotepadTextDashed,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { dashboard, logout } from '@/routes';
 import { edit as editProfile } from '@/routes/profile';
-import type { AppLayoutProps } from '@/types';
+import type { AppLayoutProps, Navigation } from '@/types';
+import { extractHref } from '@/types/navigation';
 
-const navigation = [
-    { title: 'Dashboard', href: dashboard(), icon: LayoutDashboard },
-    { title: 'Analytics', href: '#', icon: BarChart2 },
-    { title: 'Users', href: '#', icon: Users },
-    { title: 'Reports', href: '#', icon: FileText },
-    { title: 'Settings', href: editProfile(), icon: Settings },
+const navigation: Navigation = [
+    {
+        section_title: "overview",
+        items: [
+            { title: 'Dashboard', href: dashboard(), icon: LayoutDashboard },
+            { title: 'Inbox', href: "#", icon: Mail },
+        ]
+    },
+    {
+        section_title: "Execution",
+        items: [
+            { title: 'Todo', href: "#", icon: CircleCheck },
+            { title: 'Projects', href: "#", icon: SquareTerminal },
+            { title: 'Schedules', href: "#", icon: Calendar },
+            { title: 'Events', href: "#", icon: Flag },
+        ]
+    },
+    {
+        section_title: "Development",
+        items: [
+            { title: 'Goals', href: "#", icon: Target },
+            { title: 'Habbits', href: "#", icon: Repeat2 },
+            { title: 'Learning Items', href: "#", icon: BookOpen },
+            { title: 'Question Banks', href: "#", icon: FileQuestion },
+        ]
+    },
+    {
+        section_title: "Life",
+        items: [
+            { title: 'Finance', href: "#", icon: Wallet },
+            { title: 'People', href: "#", icon: Users },
+            { title: 'Opportunities', href: "#", icon: Search },
+        ]
+    },
+    {
+        section_title: "Knowledge",
+        items: [
+            { title: 'Notes', href: "#", icon: NotepadText },
+            { title: 'Resources', href: "#", icon: Folder },
+            { title: 'Journal', href: "#", icon: NotepadTextDashed },
+        ]
+    },
+    {
+        section_title: "Others",
+        items: [
+            { title: 'Settings', href: editProfile(), icon: Settings },
+        ]
+    }
 ];
 
 export default function AppSidebarDashboardLayout({
@@ -59,22 +111,32 @@ export default function AppSidebarDashboardLayout({
                 </div>
 
                 <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1" aria-label="Main navigation">
-                    {navigation.map((item) => (
-                        <Link
-                            key={item.title}
-                            href={item.href}
-                            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isSidebarCollapsed
-                                ? 'justify-center'
-                                : 'justify-start'
-                                } ${usePage().url.startsWith(item.href) && item.href !== '#'
-                                    ? 'bg-stone-100 text-stone-900 dark:bg-stone-800 dark:text-stone-100'
-                                    : 'text-stone-600 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-stone-800'
-                                }`}
-                            title={isSidebarCollapsed ? item.title : undefined}
-                        >
-                            <item.icon className="size-5 flex-shrink-0" aria-hidden="true" />
-                            {!isSidebarCollapsed && <span className="truncate">{item.title}</span>}
-                        </Link>
+                    {navigation.map((section) => (
+                        <div key={section.section_title} className="mb-4">
+                            {!isSidebarCollapsed && <div className="px-3 py-1 text-xs font-semibold uppercase text-stone-500">{section.section_title}</div>}
+                            {section.items.map((item) => {
+                                const itemHref = extractHref(item.href);
+                                const isActive = itemHref === usePage().url && itemHref !== '#';
+                                return (
+                                    <Link
+                                        key={item.title}
+                                        href={item.href}
+                                        className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isSidebarCollapsed
+                                            ? 'justify-center'
+                                            : 'justify-start'
+                                            } ${isActive
+                                                ? 'bg-stone-100 text-stone-900 dark:bg-stone-800 dark:text-stone-100'
+                                                : item.href == "#" ? "text-stone-400 cursor-default"
+                                                    : 'text-stone-600 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-stone-800'
+                                            }`}
+                                        title={isSidebarCollapsed ? item.title : undefined}
+                                    >
+                                        {item.icon && <item.icon className="size-5 shrink-0" aria-hidden="true" />}
+                                        {!isSidebarCollapsed && <span className="truncate">{item.title}</span>}
+                                    </Link>
+                                )
+                            })}
+                        </div>
                     ))}
                 </nav>
 
@@ -87,7 +149,7 @@ export default function AppSidebarDashboardLayout({
                             }`}
                         title={isSidebarCollapsed ? 'Log out' : undefined}
                     >
-                        <LogOut className="size-5 flex-shrink-0" aria-hidden="true" />
+                        <LogOut className="size-5 shrink-0" aria-hidden="true" />
                         {!isSidebarCollapsed && <span>Log out</span>}
                     </Link>
                 </div>
