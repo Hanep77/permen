@@ -18,14 +18,21 @@ import {
     FileQuestion,
     Wallet,
     Users,
-    Search,
     NotepadText,
     Folder,
     NotepadTextDashed,
+    Briefcase,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { dashboard, logout } from '@/routes';
 import { edit as editProfile } from '@/routes/profile';
+import goals from '@/routes/goals';
+import projects from '@/routes/projects';
+import opportunities from '@/routes/opportunities';
+import todos from '@/routes/todos';
+import notes from '@/routes/notes';
+import resources from '@/routes/resources';
+import learningItems from '@/routes/learning-items';
 import type { AppLayoutProps, Navigation } from '@/types';
 import { extractHref } from '@/types/navigation';
 
@@ -40,8 +47,8 @@ const navigation: Navigation = [
     {
         section_title: "Execution",
         items: [
-            { title: 'Todo', href: "#", icon: CircleCheck },
-            { title: 'Projects', href: "#", icon: SquareTerminal },
+            { title: 'Todos', href: todos.index(), icon: CircleCheck },
+            { title: 'Projects', href: projects.index(), icon: SquareTerminal },
             { title: 'Schedules', href: "#", icon: Calendar },
             { title: 'Events', href: "#", icon: Flag },
         ]
@@ -49,9 +56,9 @@ const navigation: Navigation = [
     {
         section_title: "Development",
         items: [
-            { title: 'Goals', href: "#", icon: Target },
+            { title: 'Goals', href: goals.index(), icon: Target },
             { title: 'Habbits', href: "#", icon: Repeat2 },
-            { title: 'Learning Items', href: "#", icon: BookOpen },
+            { title: 'Learning Items', href: learningItems.index(), icon: BookOpen },
             { title: 'Question Banks', href: "#", icon: FileQuestion },
         ]
     },
@@ -60,14 +67,14 @@ const navigation: Navigation = [
         items: [
             { title: 'Finance', href: "#", icon: Wallet },
             { title: 'People', href: "#", icon: Users },
-            { title: 'Opportunities', href: "#", icon: Search },
+            { title: 'Opportunities', href: opportunities.index(), icon: Briefcase },
         ]
     },
     {
         section_title: "Knowledge",
         items: [
-            { title: 'Notes', href: "#", icon: NotepadText },
-            { title: 'Resources', href: "#", icon: Folder },
+            { title: 'Notes', href: notes.index(), icon: NotepadText },
+            { title: 'Resources', href: resources.index(), icon: Folder },
             { title: 'Journal', href: "#", icon: NotepadTextDashed },
         ]
     },
