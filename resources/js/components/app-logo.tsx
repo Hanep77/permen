@@ -1,6 +1,6 @@
 // import { usePage } from '@inertiajs/react';
 
-import { User } from "lucide-react";
+import { User } from 'lucide-react';
 
 // import AppLogoIcon from '@/components/app-logo-icon';
 
@@ -9,12 +9,12 @@ export default function AppLogo() {
 
     return (
         <>
-            <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-700 text-white shadow-sm dark:bg-emerald-500">
+            <div className="flex size-10 items-center justify-center rounded-md bg-primary-container text-on-primary-container">
                 {/* <AppLogoIcon className="size-5 fill-current" /> */}
-                <User />
+                <User className="size-5" />
             </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="truncate leading-tight font-semibold">
+            <div className="ml-1 grid flex-1 text-left">
+                <span className="truncate text-title-medium leading-tight text-on-surface">
                     PERMEN
                 </span>
             </div>

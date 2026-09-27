@@ -58,19 +58,19 @@ export default function NotesShow({ note }: Props) {
                     <div className="flex items-center gap-4">
                         <Link
                             href={notes.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
+                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
                         >
                             <ArrowLeft className="size-4" />
                             Back to Notes
                         </Link>
                         <div>
-                            <h1 className="text-3xl font-semibold tracking-tight">{note.title}</h1>
-                            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                            <h1 className="text-headline-small text-on-surface">{note.title}</h1>
+                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                                 {(note.project ? (
                                     <>
                                         <Link
                                             href={projects.show(note.project!.id).url}
-                                            className="text-emerald-600 hover:underline dark:text-emerald-400"
+                                            className="text-primary hover:underline text-primary"
                                         >
                                             {note.project!.title}
                                         </Link>{' '}
@@ -81,7 +81,7 @@ export default function NotesShow({ note }: Props) {
                                     <>
                                         <Link
                                             href={goals.show(note.goal!.id).url}
-                                            className="text-blue-600 hover:underline dark:text-blue-400"
+                                            className="text-secondary hover:underline text-secondary"
                                         >
                                             {note.goal!.title}
                                         </Link>{' '}
@@ -127,15 +127,15 @@ export default function NotesShow({ note }: Props) {
                         <CardContent>
                             <dl className="space-y-4 text-sm">
                                 <div className="flex justify-between">
-                                    <dt className="text-stone-500 dark:text-stone-400">Created</dt>
+                                    <dt className="text-on-surface-variant text-on-surface-variant">Created</dt>
                                     <dd className="font-medium">{new Date(note.created_at).toLocaleDateString()}</dd>
                                 </div>
                                 <div className="flex justify-between">
-                                    <dt className="text-stone-500 dark:text-stone-400">Updated</dt>
+                                    <dt className="text-on-surface-variant text-on-surface-variant">Updated</dt>
                                     <dd className="font-medium">{new Date(note.updated_at).toLocaleDateString()}</dd>
                                 </div>
                                 <div className="flex justify-between">
-                                    <dt className="text-stone-500 dark:text-stone-400">Author</dt>
+                                    <dt className="text-on-surface-variant text-on-surface-variant">Author</dt>
                                     <dd className="font-medium">{note.user.name}</dd>
                                 </div>
                             </dl>

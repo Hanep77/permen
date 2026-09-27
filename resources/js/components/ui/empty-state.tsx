@@ -17,28 +17,25 @@ interface EmptyStateProps {
 
 export function EmptyState({ title, description, action, icon }: EmptyStateProps) {
     return (
-        <div className={cn('flex flex-col items-center justify-center py-12 text-center', 'dark:text-stone-400')}>
+        <div className={cn('flex flex-col items-center justify-center px-6 py-12 text-center')}>
             {icon && (
-                <div className={cn('mb-4 text-stone-400', 'dark:text-stone-500')}>
+                <div
+                    className={cn(
+                        'mb-4 flex size-20 items-center justify-center rounded-full bg-secondary-container text-on-secondary-container [&_svg]:size-8',
+                    )}
+                >
                     {icon}
                 </div>
             )}
-            <h3 className={cn('text-lg font-medium text-stone-900', 'dark:text-stone-100')}>
-                {title}
-            </h3>
+            <h3 className={cn('text-title-large text-on-surface')}>{title}</h3>
             {description && (
-                <p className={cn('mt-2 text-sm text-stone-500', 'dark:text-stone-400')}>
+                <p className={cn('mt-2 max-w-sm text-body-medium text-on-surface-variant')}>
                     {description}
                 </p>
             )}
             {action && (
-                <Button
-                    as={Link}
-                    href={action.href}
-                    className="mt-4 gap-2"
-                    size="sm"
-                >
-                    <Plus className="size-4" />
+                <Button as={Link} href={action.href} className="mt-6 gap-2" size="default">
+                    <Plus className="size-[18px]" />
                     {action.label}
                 </Button>
             )}

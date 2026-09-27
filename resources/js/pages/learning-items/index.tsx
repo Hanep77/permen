@@ -101,7 +101,7 @@ export default function LearningItemsIndex({
                     <CrudListItem key={item.id} href={learningItems.show(item.id).url}>
                         <div className="flex flex-1 items-center justify-between gap-3">
                             <div className="flex min-w-0 flex-1 items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary-container bg-primary-container/30">
                                     {getTypeIcon(item.type)}
                                 </div>
                                 <div className="min-w-0">
@@ -113,7 +113,7 @@ export default function LearningItemsIndex({
                                             </RelatedLink>
                                         )}
                                     </div>
-                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                    <p className="text-sm text-on-surface-variant text-on-surface-variant">
                                         {item.type.charAt(0).toUpperCase() + item.type.slice(1)} ·{' '}
                                         {item.completed_at ? 'Completed' : 'In Progress'}
                                     </p>

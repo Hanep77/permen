@@ -64,10 +64,10 @@ function dueInfo(dueDate: string, status: string): DueInfo {
 }
 
 const dueToneClass: Record<DueInfo['tone'], string> = {
-    overdue: 'font-medium text-red-600 dark:text-red-400',
-    today: 'font-medium text-amber-600 dark:text-amber-400',
-    upcoming: 'text-stone-500 dark:text-stone-400',
-    muted: 'text-stone-400 dark:text-stone-500',
+    overdue: 'font-medium text-error',
+    today: 'font-medium text-tertiary',
+    upcoming: 'text-on-surface-variant',
+    muted: 'text-on-surface-variant/70',
 };
 
 function nextStatus(current: string): string {
@@ -129,23 +129,23 @@ export function TodoStatusToggle({
             aria-label={isCompleted ? 'Mark as not completed' : 'Mark as completed'}
             title={isCompleted ? 'Mark as not completed' : 'Mark as completed'}
             className={cn(
-                'flex shrink-0 items-center justify-center rounded-full border-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:cursor-wait',
+                'flex shrink-0 items-center justify-center rounded-full border-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-wait',
                 size === 'md' ? 'size-6' : 'size-5',
                 isCompleted
-                    ? 'border-emerald-600 bg-emerald-600 text-white hover:bg-emerald-700'
+                    ? 'border-primary bg-primary text-on-primary'
                     : isCancelled
-                      ? 'border-stone-300 bg-stone-200 text-stone-500 hover:border-stone-400 dark:border-stone-700 dark:bg-stone-800'
+                      ? 'border-outline-variant bg-surface-container-highest text-on-surface-variant hover:border-outline'
                       : isInProgress
-                        ? 'border-emerald-500 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-900/20'
-                        : 'border-stone-300 hover:border-emerald-500 hover:bg-emerald-50 dark:border-stone-600 dark:hover:bg-emerald-900/20',
+                        ? 'border-primary bg-primary-container/40 hover:bg-primary-container/60'
+                        : 'border-outline hover:border-primary hover:bg-primary/8',
             )}
         >
             {pending ? (
-                <Loader2 className={cn('animate-spin text-stone-400', size === 'md' ? 'size-3.5' : 'size-3')} />
+                <Loader2 className={cn('animate-spin text-on-surface-variant', size === 'md' ? 'size-3.5' : 'size-3')} />
             ) : isCompleted ? (
                 <Check className={cn(size === 'md' ? 'size-3.5' : 'size-3')} strokeWidth={3} />
             ) : isInProgress ? (
-                <span className="size-2 rounded-full bg-emerald-500" />
+                <span className="size-2 rounded-full bg-primary" />
             ) : null}
         </button>
     );
@@ -155,7 +155,7 @@ function RelatedPill({ href, dotClassName, children }: { href: string; dotClassN
     return (
         <Link
             href={href}
-            className="inline-flex max-w-[160px] items-center gap-1.5 rounded-full bg-stone-100 py-0.5 pr-2.5 pl-2 text-[11px] font-medium text-stone-600 transition-colors hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300 dark:hover:bg-stone-700"
+            className="inline-flex max-w-[160px] items-center gap-1.5 rounded-full bg-surface-container-high py-0.5 pr-2.5 pl-2 text-[11px] font-medium text-on-surface-variant transition-colors hover:bg-surface-container-highest"
         >
             <span className={cn('size-1.5 shrink-0 rounded-full', dotClassName)} />
             <span className="truncate">{children}</span>
@@ -166,7 +166,7 @@ function RelatedPill({ href, dotClassName, children }: { href: string; dotClassN
 function PriorityMeta({ priority }: { priority: string }) {
     if (priority === 'high') {
         return (
-            <span className="inline-flex items-center gap-1 font-medium text-red-600 dark:text-red-400">
+            <span className="inline-flex items-center gap-1 font-medium text-error">
                 <Flag className="size-3" />
                 High
             </span>
@@ -174,8 +174,8 @@ function PriorityMeta({ priority }: { priority: string }) {
     }
     if (priority === 'medium') {
         return (
-            <span className="inline-flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
-                <span className="size-1.5 rounded-full bg-amber-500" />
+            <span className="inline-flex items-center gap-1.5 text-tertiary">
+                <span className="size-1.5 rounded-full bg-tertiary" />
                 Medium
             </span>
         );
@@ -184,7 +184,7 @@ function PriorityMeta({ priority }: { priority: string }) {
 }
 
 export function TodoList({ children }: { children: React.ReactNode }) {
-    return <ul className="divide-y divide-stone-100 dark:divide-stone-800">{children}</ul>;
+    return <ul className="divide-y divide-outline-variant">{children}</ul>;
 }
 
 export function TodoListItem({ todo }: { todo: TodoListTodo }) {
@@ -202,7 +202,7 @@ export function TodoListItem({ todo }: { todo: TodoListTodo }) {
     return (
         <li
             className={cn(
-                'group flex items-center gap-3 px-1 py-3 transition-colors first:pt-1 last:pb-1 hover:bg-stone-50/80 sm:rounded-lg dark:hover:bg-stone-800/40',
+                'group flex items-center gap-3 px-1 py-3 transition-colors first:pt-1 last:pb-1 hover:bg-on-surface/5 sm:rounded-xs',
                 isDone && 'opacity-55',
             )}
         >
@@ -212,8 +212,8 @@ export function TodoListItem({ todo }: { todo: TodoListTodo }) {
                 <div className="flex items-center gap-2">
                     <h3
                         className={cn(
-                            'truncate text-sm font-medium text-stone-900 dark:text-stone-100',
-                            isDone && 'text-stone-400 line-through decoration-stone-300 dark:text-stone-500',
+                            'truncate text-body-large text-on-surface',
+                            isDone && 'text-on-surface-variant line-through decoration-outline',
                         )}
                     >
                         {todo.title}
@@ -226,19 +226,19 @@ export function TodoListItem({ todo }: { todo: TodoListTodo }) {
                     <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs">
                         <PriorityMeta priority={todo.priority} />
                         {todo.project && (
-                            <RelatedPill href={projects.show(todo.project.id).url} dotClassName="bg-emerald-500">
+                            <RelatedPill href={projects.show(todo.project.id).url} dotClassName="bg-primary">
                                 {todo.project.title}
                             </RelatedPill>
                         )}
                         {todo.goal && (
-                            <RelatedPill href={goals.show(todo.goal.id).url} dotClassName="bg-blue-500">
+                            <RelatedPill href={goals.show(todo.goal.id).url} dotClassName="bg-secondary">
                                 {todo.goal.title}
                             </RelatedPill>
                         )}
                         {todo.learning_item && (
                             <RelatedPill
                                 href={learningItems.show(todo.learning_item.id).url}
-                                dotClassName="bg-purple-500"
+                                dotClassName="bg-tertiary"
                             >
                                 {todo.learning_item.title}
                             </RelatedPill>
@@ -248,12 +248,12 @@ export function TodoListItem({ todo }: { todo: TodoListTodo }) {
             </Link>
 
             <div className="flex shrink-0 items-center gap-1">
-                <span className={cn('inline-flex items-center gap-1 text-xs whitespace-nowrap', dueToneClass[due.tone])}>
-                    {due.tone === 'overdue' && <span className="size-1.5 animate-pulse rounded-full bg-red-500" />}
-                    <Calendar className="size-3" />
+                <span className={cn('inline-flex items-center gap-1 text-body-small whitespace-nowrap', dueToneClass[due.tone])}>
+                    {due.tone === 'overdue' && <span className="size-1.5 animate-pulse rounded-full bg-error" />}
+                    <Calendar className="size-3.5" />
                     {due.label}
                 </span>
-                <ChevronRight className="size-4 text-stone-300 opacity-30 transition-opacity group-hover:opacity-100 sm:opacity-0 dark:text-stone-600" />
+                <ChevronRight className="size-5 text-on-surface-variant opacity-30 transition-opacity group-hover:opacity-100 sm:opacity-0" />
             </div>
         </li>
     );

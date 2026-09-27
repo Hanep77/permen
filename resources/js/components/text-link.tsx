@@ -4,15 +4,11 @@ import { cn } from '@/lib/utils';
 
 type Props = ComponentProps<typeof Link>;
 
-export default function TextLink({
-    className = '',
-    children,
-    ...props
-}: Props) {
+export default function TextLink({ className = '', children, ...props }: Props) {
     return (
         <Link
             className={cn(
-                'text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500',
+                'text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-200 ease-out hover:bg-primary/8 hover:decoration-current rounded-xs',
                 className,
             )}
             {...props}

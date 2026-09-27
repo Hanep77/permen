@@ -85,19 +85,19 @@ export default function LearningItemsShow({ learningItem }: Props) {
                     <div className="flex items-center gap-4">
                         <Link
                             href={learningItems.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
+                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
                         >
                             <ArrowLeft className="size-4" />
                             Back to Learning Items
                         </Link>
                         <div>
-                            <h1 className="text-3xl font-semibold tracking-tight">{learningItem.title}</h1>
-                            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                            <h1 className="text-headline-small text-on-surface">{learningItem.title}</h1>
+                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                                 {learningItem.goal ? (
                                     <>
                                         <Link
                                             href={goals.show(learningItem.goal.id).url}
-                                            className="text-emerald-600 hover:underline dark:text-emerald-400"
+                                            className="text-primary hover:underline text-primary"
                                         >
                                             {learningItem.goal.title}
                                         </Link>{' '}
@@ -159,7 +159,7 @@ export default function LearningItemsShow({ learningItem }: Props) {
                             </CardHeader>
                             <CardContent>
                                 {learningItem.todos.length === 0 ? (
-                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                    <p className="text-sm text-on-surface-variant text-on-surface-variant">
                                         No todos yet. Create a todo to track steps for this learning item.
                                     </p>
                                 ) : (
@@ -168,10 +168,10 @@ export default function LearningItemsShow({ learningItem }: Props) {
                                             <Link
                                                 key={todo.id}
                                                 href={todos.show(todo.id).url}
-                                                className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                                className="flex items-center justify-between p-3 rounded-md border border-outline-variant hover:bg-on-surface/5 transition-colors border-outline-variant hover:bg-on-surface/8"
                                             >
                                                 <div>
-                                                    <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                    <p className="font-medium text-on-surface text-on-surface">
                                                         {todo.title}
                                                     </p>
                                                     <Badge variant={getTodoStatusVariant(todo.status)}>
@@ -204,7 +204,7 @@ export default function LearningItemsShow({ learningItem }: Props) {
                             </CardHeader>
                             <CardContent>
                                 {learningItem.resources.length === 0 ? (
-                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                    <p className="text-sm text-on-surface-variant text-on-surface-variant">
                                         No resources yet. Save a resource to reference for this learning item.
                                     </p>
                                 ) : (
@@ -213,13 +213,13 @@ export default function LearningItemsShow({ learningItem }: Props) {
                                             <Link
                                                 key={resource.id}
                                                 href={resources.show(resource.id).url}
-                                                className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                                className="flex items-center justify-between p-3 rounded-md border border-outline-variant hover:bg-on-surface/5 transition-colors border-outline-variant hover:bg-on-surface/8"
                                             >
                                                 <div>
-                                                    <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                    <p className="font-medium text-on-surface text-on-surface">
                                                         {resource.title}
                                                     </p>
-                                                    <p className="text-sm text-stone-500 dark:text-stone-400 capitalize">
+                                                    <p className="text-sm text-on-surface-variant text-on-surface-variant capitalize">
                                                         {resource.type}
                                                     </p>
                                                 </div>
@@ -239,20 +239,20 @@ export default function LearningItemsShow({ learningItem }: Props) {
                             <CardContent>
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Current Status</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Current Status</span>
                                         <Badge variant={learningItem.completed_at ? 'success' : 'default'} className="text-base px-3 py-1">
                                             {learningItem.completed_at ? 'Completed' : 'In Progress'}
                                         </Badge>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Type</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Type</span>
                                         <span className="inline-flex items-center gap-1.5 text-sm font-medium">
                                             {getTypeIcon(learningItem.type)}
                                             {formatType(learningItem.type)}
                                         </span>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Started</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Started</span>
                                         <span className="text-sm font-medium">
                                             <Calendar className="size-4 inline mr-1" />
                                             {new Date(learningItem.start_at).toLocaleDateString()}
@@ -260,7 +260,7 @@ export default function LearningItemsShow({ learningItem }: Props) {
                                     </div>
                                     {learningItem.completed_at && (
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm text-stone-500 dark:text-stone-400">Completed</span>
+                                            <span className="text-sm text-on-surface-variant text-on-surface-variant">Completed</span>
                                             <span className="text-sm font-medium">
                                                 <CheckCircle2 className="size-4 inline mr-1" />
                                                 {new Date(learningItem.completed_at).toLocaleDateString()}

@@ -84,7 +84,7 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                             data-test="reset-password-button"
                         >
                             {processing && (
-                                <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                                <span className="size-4 animate-spin rounded-full border-2 border-on-primary/40 border-t-on-primary" />
                             )}
                             Reset password
                         </button>

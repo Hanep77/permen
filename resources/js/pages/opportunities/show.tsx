@@ -81,19 +81,19 @@ export default function OpportunitiesShow({ opportunity }: Props) {
                     <div className="flex items-center gap-4">
                         <Link
                             href={opportunities.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
+                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
                         >
                             <ArrowLeft className="size-4" />
                             Back to Opportunities
                         </Link>
                         <div>
-                            <h1 className="text-3xl font-semibold tracking-tight">{opportunity.title}</h1>
-                            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                            <h1 className="text-headline-small text-on-surface">{opportunity.title}</h1>
+                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                                 {opportunity.goal ? (
                                     <>
                                         <Link
                                             href={goals.show(opportunity.goal!.id).url}
-                                            className="text-emerald-600 hover:underline dark:text-emerald-400"
+                                            className="text-primary hover:underline text-primary"
                                         >
                                             {opportunity.goal!.title}
                                         </Link>{' '}
@@ -139,7 +139,7 @@ export default function OpportunitiesShow({ opportunity }: Props) {
                             </CardHeader>
                             <CardContent>
                                 <div className="flex items-start gap-3">
-                                    <FileText className="size-5 text-stone-400 mt-0.5 shrink-0" />
+                                    <FileText className="size-5 text-on-surface-variant mt-0.5 shrink-0" />
                                     <MarkdownContent content={opportunity.next_action} />
                                 </div>
                             </CardContent>
@@ -154,29 +154,29 @@ export default function OpportunitiesShow({ opportunity }: Props) {
                             <CardContent>
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Current Status</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Current Status</span>
                                         <Badge variant={getStatusVariant(opportunity.status)} className="text-base px-3 py-1">
                                             {opportunity.status.charAt(0).toUpperCase() + opportunity.status.slice(1)}
                                         </Badge>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Source</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Source</span>
                                         <span className="text-sm font-medium">{opportunity.source}</span>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Priority</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Priority</span>
                                         <Badge variant={getPriorityVariant(opportunity.priority)}>
                                             {opportunity.priority.charAt(0).toUpperCase() + opportunity.priority.slice(1)}
                                         </Badge>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Estimated Value</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Estimated Value</span>
                                         <Badge variant="outline">
                                             {opportunity.estimated_value.charAt(0).toUpperCase() + opportunity.estimated_value.slice(1)}
                                         </Badge>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Due Date</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Due Date</span>
                                         <span className="text-sm font-medium">
                                             <Calendar className="size-4 inline mr-1" />
                                             {new Date(opportunity.due_date).toLocaleDateString()}

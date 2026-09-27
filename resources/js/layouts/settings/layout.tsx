@@ -30,16 +30,16 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
 
     return (
-        <div className="px-4 py-6">
+        <div className="bg-surface px-4 py-6 text-on-surface">
             <Heading
                 title="Settings"
                 description="Manage your profile and account settings"
             />
 
             <div className="flex flex-col gap-8 lg:flex-row">
-                <aside className="w-full lg:w-48">
+                <aside className="w-full lg:w-60">
                     <nav
-                        className="flex gap-1 overflow-x-auto lg:flex-col"
+                        className="flex gap-1 overflow-x-auto rounded-md bg-surface-container-low p-2 lg:flex-col"
                         aria-label="Settings"
                     >
                         {sidebarNavItems.map((item, index) => (
@@ -47,11 +47,11 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                 key={`${toUrl(item.href)}-${index}`}
                                 href={item.href}
                                 className={cn(
-                                    'shrink-0 rounded-md px-3 py-2 text-sm font-medium transition',
+                                    'h-12 shrink-0 rounded-full px-4 text-label-large transition inline-flex items-center',
                                     {
-                                        'bg-emerald-700 text-white dark:bg-emerald-500':
+                                        'bg-secondary-container text-on-secondary-container':
                                             isCurrentOrParentUrl(item.href),
-                                        'text-stone-600 hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800':
+                                        'text-on-surface-variant hover:bg-on-surface/8':
                                             !isCurrentOrParentUrl(item.href),
                                     },
                                 )}
@@ -63,9 +63,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                 </aside>
 
                 <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">
-                        {children}
-                    </section>
+                    <section className="max-w-xl space-y-12">{children}</section>
                 </div>
             </div>
         </div>

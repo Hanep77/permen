@@ -19,7 +19,7 @@ export function CrudPagination({ links }: { links: PaginationLink[] }) {
                 link.active ? (
                     <span
                         key={`${link.label}-${i}`}
-                        className="rounded-md bg-emerald-600 px-3 py-1 text-sm font-medium text-white"
+                        className="flex h-10 min-w-10 items-center justify-center rounded-full bg-secondary-container px-3 text-label-large text-on-secondary-container"
                     >
                         <PaginationLabel label={link.label} />
                     </span>
@@ -28,14 +28,16 @@ export function CrudPagination({ links }: { links: PaginationLink[] }) {
                         key={`${link.label}-${i}`}
                         href={link.url}
                         className={cn(
-                            'rounded-md px-3 py-1 text-sm text-stone-600 hover:bg-stone-100',
-                            'dark:text-stone-400 dark:hover:bg-stone-800',
+                            'flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-label-large text-on-surface-variant transition hover:bg-on-surface/8',
                         )}
                     >
                         <PaginationLabel label={link.label} />
                     </Link>
                 ) : (
-                    <span key={`${link.label}-${i}`} className="px-3 py-1 text-sm text-stone-400">
+                    <span
+                        key={`${link.label}-${i}`}
+                        className="flex h-10 min-w-10 items-center justify-center px-3 text-label-large text-on-surface/40"
+                    >
                         <PaginationLabel label={link.label} />
                     </span>
                 ),

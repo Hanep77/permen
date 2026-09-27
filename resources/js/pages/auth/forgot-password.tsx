@@ -11,7 +11,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <Head title="Forgot password" />
 
             {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
+                <div className="mb-4 text-center text-sm font-medium text-primary">
                     {status}
                 </div>
             )}
@@ -44,7 +44,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                     data-test="email-password-reset-link-button"
                                 >
                                     {processing && (
-                                        <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                                        <span className="size-4 animate-spin rounded-full border-2 border-on-primary/40 border-t-on-primary" />
                                     )}
                                     Email password reset link
                                 </button>
@@ -53,7 +53,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     )}
                 </Form>
 
-                <div className="space-x-1 text-center text-sm text-stone-500 dark:text-stone-400">
+                <div className="space-x-1 text-center text-sm text-on-surface-variant text-on-surface-variant">
                     <span>Or, return to</span>
                     <TextLink href={login()}>log in</TextLink>
                 </div>

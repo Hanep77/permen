@@ -107,13 +107,13 @@ export default function Register({ passwordRules }: Props) {
                                 data-test="register-user-button"
                             >
                                 {processing && (
-                                    <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                                    <span className="size-4 animate-spin rounded-full border-2 border-on-primary/40 border-t-on-primary" />
                                 )}
                                 Create account
                             </button>
                         </div>
 
-                        <div className="text-center text-sm text-stone-500 dark:text-stone-400">
+                        <div className="text-center text-sm text-on-surface-variant text-on-surface-variant">
                             Already have an account?{' '}
                             <TextLink href={login()} tabIndex={6}>
                                 Log in

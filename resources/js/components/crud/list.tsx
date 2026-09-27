@@ -20,7 +20,11 @@ export function StatusBadge({
 }
 
 export function CrudList({ children }: { children: React.ReactNode }) {
-    return <div className="space-y-4">{children}</div>;
+    return (
+        <div className="divide-y divide-outline-variant overflow-hidden rounded-md bg-surface">
+            {children}
+        </div>
+    );
 }
 
 export function CrudListItem({ href, children }: { href: string; children: React.ReactNode }) {
@@ -28,8 +32,7 @@ export function CrudListItem({ href, children }: { href: string; children: React
         <Link
             href={href}
             className={cn(
-                'flex items-center justify-between rounded-lg border border-stone-200 p-4 transition-colors hover:bg-stone-50',
-                'dark:border-stone-800 dark:hover:bg-stone-800',
+                'flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-on-surface/5 focus:bg-on-surface/8 sm:px-6',
             )}
         >
             <div className="min-w-0 flex-1">{children}</div>
@@ -38,29 +41,29 @@ export function CrudListItem({ href, children }: { href: string; children: React
 }
 
 export function ItemTitle({ children }: { children: React.ReactNode }) {
-    return (
-        <h3 className="truncate font-medium text-stone-900 dark:text-stone-100">{children}</h3>
-    );
+    return <h3 className="truncate text-body-large text-on-surface">{children}</h3>;
 }
 
 export function ItemDescription({ children }: { children: React.ReactNode }) {
     return (
-        <p className="mt-1 line-clamp-1 text-sm text-stone-500 dark:text-stone-400">{children}</p>
+        <p className="mt-0.5 line-clamp-1 text-body-medium text-on-surface-variant">
+            {children}
+        </p>
     );
 }
 
 export function ItemMeta({ children }: { children: React.ReactNode }) {
     return (
-        <div className="mt-2 flex items-center gap-3 text-xs text-stone-500 dark:text-stone-400">
+        <div className="mt-1.5 flex flex-wrap items-center gap-2 text-body-small text-on-surface-variant">
             {children}
         </div>
     );
 }
 
 const relatedTones = {
-    emerald: 'text-emerald-600 hover:underline dark:text-emerald-400',
-    blue: 'text-blue-600 hover:underline dark:text-blue-400',
-    purple: 'text-purple-600 hover:underline dark:text-purple-400',
+    emerald: 'text-primary hover:underline',
+    blue: 'text-secondary hover:underline',
+    purple: 'text-tertiary hover:underline',
 } as const;
 
 export function RelatedLink({
@@ -81,7 +84,10 @@ export function RelatedLink({
                 e.stopPropagation();
                 onClick?.(e);
             }}
-            className={cn('text-xs', relatedTones[tone])}
+            className={cn(
+                'rounded-xs px-1 text-body-small font-medium',
+                relatedTones[tone],
+            )}
         >
             {children}
         </Link>

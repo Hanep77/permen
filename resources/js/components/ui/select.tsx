@@ -17,26 +17,38 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-    ({ className, label, error, hint, options, placeholder, id, ...props }, ref) => {
+    ({ className, label, error, hint, options, placeholder, id, required, ...props }, ref) => {
         const selectId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
         return (
             <div className="space-y-1.5">
                 {label && (
-                    <label htmlFor={selectId} className="block text-sm font-medium text-stone-700 dark:text-stone-300">
+                    <label
+                        htmlFor={selectId}
+                        className="block text-label-medium text-on-surface-variant"
+                    >
                         {label}
+                        {required && <span className="ml-0.5 text-error">*</span>}
                     </label>
                 )}
                 <select
                     ref={ref}
                     id={selectId}
+                    required={required}
                     className={cn(
-                        'flex h-10 w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100',
-                        error && 'border-red-500 focus:ring-red-500',
-                        className
+                        'flex h-12 w-full rounded-xs border border-outline bg-transparent px-4 text-body-large text-on-surface transition outline-none hover:border-on-surface focus:border-2 focus:border-primary disabled:cursor-not-allowed disabled:opacity-50',
+                        error &&
+                            'border-error focus:border-error hover:border-error',
+                        className,
                     )}
                     aria-invalid={error ? 'true' : 'false'}
-                    aria-describedby={error ? `${selectId}-error` : hint ? `${selectId}-hint` : undefined}
+                    aria-describedby={
+                        error
+                            ? `${selectId}-error`
+                            : hint
+                              ? `${selectId}-hint`
+                              : undefined
+                    }
                     {...props}
                 >
                     {placeholder && (
@@ -51,18 +63,25 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     ))}
                 </select>
                 {error && (
-                    <p id={`${selectId}-error`} className="text-sm text-red-600 dark:text-red-400" role="alert">
+                    <p
+                        id={`${selectId}-error`}
+                        className="text-body-small text-error"
+                        role="alert"
+                    >
                         {error}
                     </p>
                 )}
                 {hint && !error && (
-                    <p id={`${selectId}-hint`} className="text-sm text-stone-500 dark:text-stone-400">
+                    <p
+                        id={`${selectId}-hint`}
+                        className="text-body-small text-on-surface-variant"
+                    >
                         {hint}
                     </p>
                 )}
             </div>
         );
-    }
+    },
 );
 
 Select.displayName = 'Select';

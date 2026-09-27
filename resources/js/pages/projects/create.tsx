@@ -61,14 +61,14 @@ export default function ProjectsCreate({ goals: goalsList }: Props) {
                 <div className="flex items-center gap-4">
                     <Link
                         href={projects.index().url}
-                        className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
+                        className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
                     >
                         <ArrowLeft className="size-4" />
                         Back to Projects
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-semibold tracking-tight">Create Project</h1>
-                        <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                        <h1 className="text-headline-small text-on-surface">Create Project</h1>
+                        <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                             Define a new project to work towards your goals
                         </p>
                     </div>
@@ -136,7 +136,7 @@ export default function ProjectsCreate({ goals: goalsList }: Props) {
                                 required
                             />
 
-                            <div className="flex justify-end gap-3 pt-4 border-t border-stone-200 dark:border-stone-800">
+                            <div className="flex justify-end gap-3 pt-4 border-t border-outline-variant border-outline-variant">
                                 <Button
                                     variant="ghost"
                                     as={Link}

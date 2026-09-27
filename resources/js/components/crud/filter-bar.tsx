@@ -30,25 +30,29 @@ export function CrudFilterBar({
     onSubmit,
 }: CrudFilterBarProps) {
     return (
-        <form onSubmit={onSubmit} className="flex flex-col gap-4 sm:flex-row">
+        <form onSubmit={onSubmit} className="flex flex-col gap-3 sm:flex-row sm:items-start">
             <div className="relative flex-1">
-                <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-stone-400" />
+                {/* M3 search bar: pill + surface-container-highest */}
+                <Search className="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-on-surface-variant" />
                 <Input
                     placeholder={searchPlaceholder}
                     value={searchValue}
                     onChange={(e) => onSearchChange(e.target.value)}
-                    className="pl-10"
+                    className="h-14 rounded-full border-0 bg-surface-container-highest pr-4 pl-12 hover:bg-surface-container-highest focus:border-primary"
                 />
             </div>
             {fields.map((field) => (
                 <div key={field.placeholder} className="relative">
-                    <Filter className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-stone-400" />
+                    <Filter className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-on-surface-variant" />
                     <Select
                         value={field.value}
                         onChange={(e) => field.onChange(e.target.value)}
                         options={field.options}
                         placeholder={field.placeholder}
-                        className={cn('pl-10', field.widthClassName ?? 'w-[180px]')}
+                        className={cn(
+                            'h-14 rounded-full border-outline-variant pr-4 pl-12',
+                            field.widthClassName ?? 'w-full sm:w-[200px]',
+                        )}
                     />
                 </div>
             ))}

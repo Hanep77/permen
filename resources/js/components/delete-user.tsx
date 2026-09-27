@@ -16,10 +16,10 @@ export default function DeleteUser() {
                 title="Delete account"
                 description="Delete your account and all of its resources"
             />
-            <div className="space-y-4 rounded-xl border border-red-200 bg-red-50 p-5 dark:border-red-900/70 dark:bg-red-950/30">
-                <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
-                    <p className="font-medium">Warning</p>
-                    <p className="text-sm">
+            <div className="space-y-4 rounded-md border border-outline-variant bg-error-container/50 p-5">
+                <div className="relative space-y-0.5 text-on-error-container">
+                    <p className="text-title-small">Warning</p>
+                    <p className="text-body-medium">
                         Please proceed with caution, this cannot be undone.
                     </p>
                 </div>
@@ -27,18 +27,18 @@ export default function DeleteUser() {
                 {!isConfirming ? (
                     <button
                         type="button"
-                        className="rounded-md bg-red-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800 dark:bg-red-600 dark:hover:bg-red-500"
+                        className="rounded-full bg-error px-6 py-2.5 text-label-large text-on-error transition hover:elevation-1"
                         onClick={() => setIsConfirming(true)}
                         data-test="delete-user-button"
                     >
                         Delete account
                     </button>
                 ) : (
-                    <div className="space-y-4 border-t border-red-200 pt-4 dark:border-red-900/70">
-                        <h3 className="font-semibold">
+                    <div className="space-y-4 border-t border-error/30 pt-4">
+                        <h3 className="text-title-medium text-on-error-container">
                             Confirm account deletion
                         </h3>
-                        <p className="text-sm text-stone-600 dark:text-stone-300">
+                        <p className="text-body-medium text-on-surface-variant">
                             Enter your password. This action permanently removes
                             your account and its data.
                         </p>
@@ -72,10 +72,10 @@ export default function DeleteUser() {
                                         <InputError message={errors.password} />
                                     </div>
 
-                                    <div className="flex flex-wrap gap-3">
+                                    <div className="flex flex-wrap gap-2">
                                         <button
                                             type="button"
-                                            className="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium hover:bg-white dark:border-stone-700 dark:hover:bg-stone-900"
+                                            className="rounded-full px-6 py-2.5 text-label-large text-primary transition hover:bg-primary/8"
                                             onClick={() => {
                                                 resetAndClearErrors();
                                                 setIsConfirming(false);
@@ -86,7 +86,7 @@ export default function DeleteUser() {
                                         <button
                                             type="submit"
                                             disabled={processing}
-                                            className="rounded-md bg-red-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800 disabled:opacity-60 dark:bg-red-600"
+                                            className="rounded-full bg-error px-6 py-2.5 text-label-large text-on-error transition hover:elevation-1 disabled:opacity-40"
                                             data-test="confirm-delete-user-button"
                                         >
                                             Delete account

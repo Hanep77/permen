@@ -75,19 +75,19 @@ export default function ProjectsShow({ project }: Props) {
                     <div className="flex items-center gap-4">
                         <Link
                             href={projects.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
+                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
                         >
                             <ArrowLeft className="size-4" />
                             Back to Projects
                         </Link>
                         <div>
-                            <h1 className="text-3xl font-semibold tracking-tight">{project.title}</h1>
-                            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                            <h1 className="text-headline-small text-on-surface">{project.title}</h1>
+                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                                 {project.goal ? (
                                     <>
                                         <Link
                                             href={goals.show(project.goal.id).url}
-                                            className="text-emerald-600 hover:underline dark:text-emerald-400"
+                                            className="text-primary hover:underline text-primary"
                                         >
                                             {project.goal.title}
                                         </Link>{' '}
@@ -146,7 +146,7 @@ export default function ProjectsShow({ project }: Props) {
                             </CardHeader>
                             <CardContent>
                                 {project.notes.length === 0 ? (
-                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                    <p className="text-sm text-on-surface-variant text-on-surface-variant">
                                         No notes yet.
                                     </p>
                                 ) : (
@@ -155,9 +155,9 @@ export default function ProjectsShow({ project }: Props) {
                                             <Link
                                                 key={note.id}
                                                 href={notes.show(note.id).url}
-                                                className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                                className="flex items-center justify-between p-3 rounded-md border border-outline-variant hover:bg-on-surface/5 transition-colors border-outline-variant hover:bg-on-surface/8"
                                             >
-                                                <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                <p className="font-medium text-on-surface text-on-surface">
                                                     {note.title}
                                                 </p>
                                             </Link>
@@ -186,7 +186,7 @@ export default function ProjectsShow({ project }: Props) {
                             </CardHeader>
                             <CardContent>
                                 {project.resources.length === 0 ? (
-                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                    <p className="text-sm text-on-surface-variant text-on-surface-variant">
                                         No resources yet.
                                     </p>
                                 ) : (
@@ -195,9 +195,9 @@ export default function ProjectsShow({ project }: Props) {
                                             <Link
                                                 key={resource.id}
                                                 href={resources.show(resource.id).url}
-                                                className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                                className="flex items-center justify-between p-3 rounded-md border border-outline-variant hover:bg-on-surface/5 transition-colors border-outline-variant hover:bg-on-surface/8"
                                             >
-                                                <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                <p className="font-medium text-on-surface text-on-surface">
                                                     {resource.title}
                                                 </p>
                                             </Link>
@@ -226,7 +226,7 @@ export default function ProjectsShow({ project }: Props) {
                             </CardHeader>
                             <CardContent>
                                 {project.todos.length === 0 ? (
-                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                    <p className="text-sm text-on-surface-variant text-on-surface-variant">
                                         No todos yet.
                                     </p>
                                 ) : (
@@ -235,10 +235,10 @@ export default function ProjectsShow({ project }: Props) {
                                             <Link
                                                 key={todo.id}
                                                 href={todos.show(todo.id).url}
-                                                className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                                className="flex items-center justify-between p-3 rounded-md border border-outline-variant hover:bg-on-surface/5 transition-colors border-outline-variant hover:bg-on-surface/8"
                                             >
                                                 <div>
-                                                    <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                    <p className="font-medium text-on-surface text-on-surface">
                                                         {todo.title}
                                                     </p>
                                                     <Badge variant={getStatusVariant(todo.status)}>
@@ -261,20 +261,20 @@ export default function ProjectsShow({ project }: Props) {
                             <CardContent>
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Current Status</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Current Status</span>
                                         <Badge variant={getStatusVariant(project.status)} className="text-base px-3 py-1">
                                             {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
                                         </Badge>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Start Date</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Start Date</span>
                                         <span className="text-sm font-medium">
                                             <Calendar className="size-4 inline mr-1" />
                                             {new Date(project.start_date).toLocaleDateString()}
                                         </span>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Target Date</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Target Date</span>
                                         <span className="text-sm font-medium">
                                             <Target className="size-4 inline mr-1" />
                                             {new Date(project.target_date).toLocaleDateString()}
@@ -282,7 +282,7 @@ export default function ProjectsShow({ project }: Props) {
                                     </div>
                                     {project.completed_at && (
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm text-stone-500 dark:text-stone-400">Completed At</span>
+                                            <span className="text-sm text-on-surface-variant text-on-surface-variant">Completed At</span>
                                             <span className="text-sm font-medium">
                                                 <Clock className="size-4 inline mr-1" />
                                                 {new Date(project.completed_at).toLocaleDateString()}

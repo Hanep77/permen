@@ -77,12 +77,9 @@ export default function Login({ status, canResetPassword }: Props) {
                                     name="remember"
                                     tabIndex={3}
                                     type="checkbox"
-                                    className="size-4 rounded border-stone-300 text-emerald-700 focus:ring-emerald-600 dark:border-stone-700 dark:bg-stone-900"
+                                    className="size-[18px] rounded-xs border-outline text-primary accent-primary focus:ring-primary"
                                 />
-                                <label
-                                    className="form-label"
-                                    htmlFor="remember"
-                                >
+                                <label className="form-label" htmlFor="remember">
                                     Remember me
                                 </label>
                             </div>
@@ -95,13 +92,13 @@ export default function Login({ status, canResetPassword }: Props) {
                                 data-test="login-button"
                             >
                                 {processing && (
-                                    <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                                    <span className="size-4 animate-spin rounded-full border-2 border-on-primary/40 border-t-on-primary" />
                                 )}
                                 Log in
                             </button>
                         </div>
 
-                        <div className="text-center text-sm text-stone-500 dark:text-stone-400">
+                        <div className="text-center text-body-medium text-on-surface-variant">
                             Don't have an account?{' '}
                             <TextLink href={register()} tabIndex={5}>
                                 Sign up
@@ -112,7 +109,7 @@ export default function Login({ status, canResetPassword }: Props) {
             </Form>
 
             {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
+                <div className="mb-4 rounded-xs bg-primary-container px-4 py-3 text-center text-body-medium font-medium text-on-primary-container">
                     {status}
                 </div>
             )}

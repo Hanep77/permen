@@ -106,7 +106,7 @@ export default function ResourcesIndex({
                 {resourcesData.data.map((resource) => (
                     <div
                         key={resource.id}
-                        className="flex items-center justify-between gap-2 rounded-lg border border-stone-200 p-4 transition-colors hover:bg-stone-50 dark:border-stone-800 dark:hover:bg-stone-800"
+                        className="flex items-center justify-between gap-2 rounded-md border border-outline-variant p-4 transition-colors hover:bg-on-surface/5 border-outline-variant hover:bg-on-surface/8"
                     >
                         <Link
                             href={resources.show(resource.id).url}

@@ -91,14 +91,14 @@ export default function OpportunitiesCreate({ preset }: Props) {
                 <div className="flex items-center gap-4">
                     <Link
                         href={backHref}
-                        className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
+                        className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
                     >
                         <ArrowLeft className="size-4" />
                         {backLabel}
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-semibold tracking-tight">Create Opportunity</h1>
-                        <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                        <h1 className="text-headline-small text-on-surface">Create Opportunity</h1>
+                        <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                             Track a new potential opportunity
                         </p>
                     </div>
@@ -111,11 +111,11 @@ export default function OpportunitiesCreate({ preset }: Props) {
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             {presetGoal && (
-                                <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm dark:border-stone-800 dark:bg-stone-900">
-                                    <span className="text-stone-500 dark:text-stone-400">Goal:</span>
+                                <div className="flex items-center gap-2 rounded-md border border-outline-variant bg-surface px-4 py-3 text-sm border-outline-variant bg-surface-container-low">
+                                    <span className="text-on-surface-variant text-on-surface-variant">Goal:</span>
                                     <Link
                                         href={goals.show(presetGoal.id).url}
-                                        className="font-medium text-emerald-600 hover:underline dark:text-emerald-400"
+                                        className="font-medium text-primary hover:underline text-primary"
                                     >
                                         {presetGoal.title}
                                     </Link>
@@ -199,7 +199,7 @@ export default function OpportunitiesCreate({ preset }: Props) {
                                 required
                             />
 
-                            <div className="flex justify-end gap-3 pt-4 border-t border-stone-200 dark:border-stone-800">
+                            <div className="flex justify-end gap-3 pt-4 border-t border-outline-variant border-outline-variant">
                                 <Button
                                     variant="ghost"
                                     as={Link}

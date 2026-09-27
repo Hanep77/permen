@@ -8,18 +8,18 @@ export default function Heading({
     variant?: 'default' | 'small';
 }) {
     return (
-        <header className={variant === 'small' ? '' : 'mb-8 space-y-0.5'}>
+        <header className={variant === 'small' ? '' : 'mb-8 space-y-1'}>
             <h2
                 className={
                     variant === 'small'
-                        ? 'mb-0.5 text-base font-medium'
-                        : 'text-xl font-semibold tracking-tight'
+                        ? 'text-title-small text-on-surface'
+                        : 'text-headline-small text-on-surface'
                 }
             >
                 {title}
             </h2>
             {description && (
-                <p className="text-muted-foreground text-sm">{description}</p>
+                <p className="text-body-medium text-on-surface-variant">{description}</p>
             )}
         </header>
     );

@@ -1,21 +1,23 @@
 import { Head } from '@inertiajs/react';
 import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 import { dashboard } from '@/routes';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function Dashboard() {
     return (
         <>
             <Head title="Dashboard" />
-            <div className="space-y-8">
-                <section className="rounded-2xl bg-emerald-800 px-6 py-10 text-white shadow-sm sm:px-10">
+            <div className="space-y-6">
+                {/* M3 hero: primary-container, large shape, headline type */}
+                <section className="rounded-lg bg-primary-container px-6 py-10 text-on-primary-container sm:px-10">
                     <div className="max-w-2xl space-y-4">
-                        <span className="inline-flex items-center gap-2 text-sm font-medium text-emerald-100">
-                            <Sparkles className="size-4" /> Your workspace
+                        <span className="inline-flex items-center gap-2 text-label-large text-on-primary-container">
+                            <Sparkles className="size-[18px]" /> Your workspace
                         </span>
-                        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                        <h1 className="text-display-small text-on-primary-container">
                             Start building something useful.
                         </h1>
-                        <p className="max-w-xl text-emerald-100">
+                        <p className="max-w-xl text-body-large text-on-primary-container/90">
                             Your application is ready for its first feature. Add
                             a route, build a page, and let Laravel handle the
                             rest.
@@ -28,37 +30,42 @@ export default function Dashboard() {
                         'Add an Inertia page',
                         'Write a feature test',
                     ].map((step, index) => (
-                        <article
-                            key={step}
-                            className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm dark:border-stone-800 dark:bg-stone-900"
-                        >
-                            <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
-                                0{index + 1}
-                            </span>
-                            <h2 className="mt-3 font-semibold">{step}</h2>
-                            <p className="mt-2 text-sm text-stone-600 dark:text-stone-400">
-                                Replace this starter content with the work that
-                                matters to your product.
-                            </p>
-                        </article>
+                        <Card key={step} variant="filled">
+                            <CardContent className="p-5 pt-5">
+                                <span className="text-label-large text-primary">
+                                    0{index + 1}
+                                </span>
+                                <h2 className="mt-3 text-title-medium text-on-surface">
+                                    {step}
+                                </h2>
+                                <p className="mt-2 text-body-medium text-on-surface-variant">
+                                    Replace this starter content with the work that
+                                    matters to your product.
+                                </p>
+                            </CardContent>
+                        </Card>
                     ))}
                 </section>
-                <section className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm dark:border-stone-800 dark:bg-stone-900">
-                    <h2 className="font-semibold">Project status</h2>
-                    <p className="mt-2 flex items-center gap-2 text-sm text-stone-600 dark:text-stone-400">
-                        <CheckCircle2 className="size-4 text-emerald-600" />{' '}
-                        Authentication and settings are ready to customize.
-                    </p>
-                    <a
-                        className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-400"
-                        href="https://laravel.com/docs"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        Read Laravel documentation{' '}
-                        <ArrowRight className="size-4" />
-                    </a>
-                </section>
+                <Card variant="outlined">
+                    <CardContent className="p-6 pt-6">
+                        <h2 className="text-title-medium text-on-surface">
+                            Project status
+                        </h2>
+                        <p className="mt-2 flex items-center gap-2 text-body-medium text-on-surface-variant">
+                            <CheckCircle2 className="size-5 text-primary" />{' '}
+                            Authentication and settings are ready to customize.
+                        </p>
+                        <a
+                            className="mt-5 inline-flex items-center gap-2 rounded-full px-2 py-1 text-label-large text-primary hover:bg-primary/8"
+                            href="https://laravel.com/docs"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Read Laravel documentation{' '}
+                            <ArrowRight className="size-[18px]" />
+                        </a>
+                    </CardContent>
+                </Card>
             </div>
         </>
     );

@@ -35,21 +35,21 @@ export function MarkdownEditor({
     const editorId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
     return (
-        <div className="space-y-1.5" data-color-mode={resolvedAppearance}>
+            <div className="space-y-1.5" data-color-mode={resolvedAppearance}>
             {label && (
                 <label
                     htmlFor={editorId}
-                    className="block text-sm font-medium text-stone-700 dark:text-stone-300"
+                    className="block text-label-medium text-on-surface-variant"
                 >
                     {label}
-                    {required && <span className="ml-0.5 text-red-500">*</span>}
+                    {required && <span className="ml-0.5 text-error">*</span>}
                 </label>
             )}
             <div
                 id={editorId}
                 className={cn(
-                    'markdown-editor-wrapper overflow-hidden rounded-md border border-stone-300 bg-white dark:border-stone-700 dark:bg-stone-900',
-                    error && 'border-red-500 dark:border-red-500',
+                    'markdown-editor-wrapper overflow-hidden rounded-xs border border-outline bg-transparent',
+                    error && 'border-error',
                 )}
             >
                 <MDEditor
@@ -64,12 +64,12 @@ export function MarkdownEditor({
                 />
             </div>
             {error && (
-                <p id={`${editorId}-error`} className="text-sm text-red-600 dark:text-red-400" role="alert">
+                <p id={`${editorId}-error`} className="text-body-small text-error" role="alert">
                     {error}
                 </p>
             )}
             {hint && !error && (
-                <p id={`${editorId}-hint`} className="text-sm text-stone-500 dark:text-stone-400">
+                <p id={`${editorId}-hint`} className="text-body-small text-on-surface-variant">
                     {hint}
                 </p>
             )}

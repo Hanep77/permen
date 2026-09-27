@@ -85,19 +85,19 @@ export default function TodosShow({ todo }: Props) {
                     <div className="flex items-center gap-4">
                         <Link
                             href={todos.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
+                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
                         >
                             <ArrowLeft className="size-4" />
                             Back to Todos
                         </Link>
                         <div>
-                            <h1 className="text-3xl font-semibold tracking-tight">{todo.title}</h1>
-                            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                            <h1 className="text-headline-small text-on-surface">{todo.title}</h1>
+                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                                 {(todo.project ? (
                                     <>
                                         <Link
                                             href={projects.show(todo.project!.id).url}
-                                            className="text-emerald-600 hover:underline dark:text-emerald-400"
+                                            className="text-primary hover:underline text-primary"
                                         >
                                             {todo.project!.title}
                                         </Link>{' '}
@@ -108,7 +108,7 @@ export default function TodosShow({ todo }: Props) {
                                     <>
                                         <Link
                                             href={goals.show(todo.goal!.id).url}
-                                            className="text-blue-600 hover:underline dark:text-blue-400"
+                                            className="text-secondary hover:underline text-secondary"
                                         >
                                             {todo.goal!.title}
                                         </Link>{' '}
@@ -119,7 +119,7 @@ export default function TodosShow({ todo }: Props) {
                                     <>
                                         <Link
                                             href={learningItems.show(todo.learning_item!.id).url}
-                                            className="text-purple-600 hover:underline dark:text-purple-400"
+                                            className="text-tertiary hover:underline text-tertiary"
                                         >
                                             {todo.learning_item!.title}
                                         </Link>{' '}
@@ -168,7 +168,7 @@ export default function TodosShow({ todo }: Props) {
                             <CardContent>
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Current Status</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Current Status</span>
                                         <span className="flex items-center gap-2">
                                             <TodoStatusToggle
                                                 todoId={todo.id}
@@ -182,13 +182,13 @@ export default function TodosShow({ todo }: Props) {
                                         </span>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Priority</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Priority</span>
                                         <Badge variant={getPriorityVariant(todo.priority)}>
                                             {todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}
                                         </Badge>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-stone-500 dark:text-stone-400">Due Date</span>
+                                        <span className="text-sm text-on-surface-variant text-on-surface-variant">Due Date</span>
                                         <span className="text-sm font-medium">
                                             <Calendar className="size-4 inline mr-1" />
                                             {new Date(todo.due_date).toLocaleDateString()}
@@ -196,7 +196,7 @@ export default function TodosShow({ todo }: Props) {
                                     </div>
                                     {todo.completed_at && (
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm text-stone-500 dark:text-stone-400">Completed At</span>
+                                            <span className="text-sm text-on-surface-variant text-on-surface-variant">Completed At</span>
                                             <span className="text-sm font-medium">
                                                 <Clock className="size-4 inline mr-1" />
                                                 {new Date(todo.completed_at).toLocaleDateString()}

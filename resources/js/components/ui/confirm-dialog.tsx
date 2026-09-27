@@ -52,40 +52,50 @@ export function ConfirmDialog({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+        <div
+            className="fixed inset-0 z-50"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dialog-title"
+        >
             <div
                 ref={overlayRef}
-                className="fixed inset-0 bg-black/50 animate-in fade-in-0"
+                className="fixed inset-0 bg-scrim/40 animate-in fade-in-0"
                 onClick={onClose}
             />
             <div
                 ref={contentRef}
                 className={cn(
-                    'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md rounded-lg bg-white p-6 shadow-xl animate-in zoom-in-95 fade-in-0 dark:bg-stone-900',
-                    'sm:max-w-lg'
+                    'fixed left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-md bg-surface-container-high p-6 shadow-[0_4px_8px_3px_rgb(0_0_0/0.15),0_1px_3px_rgb(0_0_0/0.3)] animate-in zoom-in-95 fade-in-0',
+                    'sm:max-w-lg',
                 )}
             >
-                <div className="flex items-start justify-between">
+                <div className="flex items-start justify-between gap-4">
                     <div>
-                        <h2 id="dialog-title" className="text-lg font-semibold text-stone-900 dark:text-stone-100">
+                        <h2
+                            id="dialog-title"
+                            className="text-headline-small text-on-surface"
+                        >
                             {title}
                         </h2>
-                        <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">{description}</p>
+                        <p className="mt-2 text-body-medium text-on-surface-variant">
+                            {description}
+                        </p>
                     </div>
                     <button
                         onClick={onClose}
-                        className="rounded-md p-1 text-stone-400 hover:text-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800"
+                        className="rounded-full p-2 text-on-surface-variant transition hover:bg-on-surface/8"
                         aria-label="Close"
                     >
-                        <X className="size-4" />
+                        <X className="size-5" />
                     </button>
                 </div>
-                <div className="mt-6 flex justify-end gap-3">
-                    <Button variant="ghost" onClick={onClose} disabled={isLoading}>
+                <div className="mt-6 flex justify-end gap-2">
+                    <Button variant="text" onClick={onClose} disabled={isLoading}>
                         {cancelText}
                     </Button>
                     <Button
-                        variant={variant}
+                        variant={variant === 'destructive' ? 'destructive' : 'filled'}
                         onClick={onConfirm}
                         disabled={isLoading}
                     >

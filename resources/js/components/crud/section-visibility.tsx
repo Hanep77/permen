@@ -94,7 +94,7 @@ export function SectionVisibilityMenu({
     return (
         <div ref={containerRef} className="relative">
             <Button
-                variant="ghost"
+                variant="text"
                 size="icon"
                 type="button"
                 onClick={() => setOpen((v) => !v)}
@@ -103,9 +103,9 @@ export function SectionVisibilityMenu({
                 title="Choose visible sections"
                 className="relative"
             >
-                <SlidersHorizontal className="size-4" />
+                <SlidersHorizontal className="size-5" />
                 {hiddenCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-semibold text-white">
+                    <span className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-error text-[10px] font-semibold text-on-error">
                         {hiddenCount}
                     </span>
                 )}
@@ -115,9 +115,9 @@ export function SectionVisibilityMenu({
                 <div
                     role="menu"
                     aria-label="Visible sections"
-                    className="absolute top-full right-0 z-20 mt-2 w-56 rounded-lg border border-stone-200 bg-white p-1.5 shadow-lg dark:border-stone-700 dark:bg-stone-900"
+                    className="absolute top-full right-0 z-20 mt-2 w-56 rounded-md bg-surface-container-high p-2 shadow-[0_2px_6px_2px_rgb(0_0_0/0.15),0_1px_2px_rgb(0_0_0/0.3)]"
                 >
-                    <p className="px-2.5 pt-1.5 pb-1 text-xs font-medium tracking-wide text-stone-500 uppercase dark:text-stone-400">
+                    <p className="px-3 pt-1.5 pb-1 text-title-small text-on-surface-variant">
                         Sections
                     </p>
                     {sections.map((section) => {
@@ -128,15 +128,15 @@ export function SectionVisibilityMenu({
                                 role="menuitemcheckbox"
                                 aria-checked={checked}
                                 className={cn(
-                                    'flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors',
-                                    'text-stone-700 hover:bg-stone-100 dark:text-stone-200 dark:hover:bg-stone-800',
+                                    'flex cursor-pointer items-center gap-3 rounded-full px-3 py-2 text-body-large transition-colors',
+                                    'text-on-surface hover:bg-on-surface/8',
                                 )}
                             >
                                 <input
                                     type="checkbox"
                                     checked={checked}
                                     onChange={() => onToggle(section.id)}
-                                    className="size-4 shrink-0 accent-emerald-600"
+                                    className="size-[18px] shrink-0 accent-primary"
                                 />
                                 {section.label}
                             </label>
@@ -149,7 +149,7 @@ export function SectionVisibilityMenu({
                                 onShowAll();
                                 setOpen(false);
                             }}
-                            className="mt-1 w-full rounded-md px-2.5 py-2 text-left text-sm font-medium text-emerald-600 transition-colors hover:bg-stone-100 dark:text-emerald-400 dark:hover:bg-stone-800"
+                            className="mt-1 w-full rounded-full px-3 py-2 text-left text-label-large text-primary transition-colors hover:bg-primary/8"
                         >
                             Show all
                         </button>
