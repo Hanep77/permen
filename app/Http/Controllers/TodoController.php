@@ -48,19 +48,7 @@ class TodoController extends Controller
             ? LearningItem::where('user_id', $userId)->find(request()->query('learning_item_id'), ['id', 'title'])
             : null;
 
-        $projects = Project::where('user_id', $userId)
-            ->get(['id', 'title']);
-
-        $goals = Goal::where('user_id', $userId)
-            ->get(['id', 'title']);
-
-        $learningItems = LearningItem::where('user_id', $userId)
-            ->get(['id', 'title']);
-
         return Inertia::render('todos/create', [
-            'projects' => $projects,
-            'goals' => $goals,
-            'learningItems' => $learningItems,
             'preset' => [
                 'project' => $project,
                 'goal' => $goal,

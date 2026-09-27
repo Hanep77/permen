@@ -18,15 +18,13 @@ interface ParentPreset {
 }
 
 interface Props {
-    projects: Array<{ id: number; title: string }>;
-    goals: Array<{ id: number; title: string }>;
     preset: {
         project: ParentPreset | null;
         goal: ParentPreset | null;
     };
 }
 
-export default function ResourcesCreate({ projects: projectsList, goals: goalsList, preset }: Props) {
+export default function ResourcesCreate({ preset }: Props) {
     const presetProject = preset.project;
     const presetGoal = preset.goal;
     const context = presetProject ? 'project' : presetGoal ? 'goal' : 'independent';
@@ -72,16 +70,6 @@ export default function ResourcesCreate({ projects: projectsList, goals: goalsLi
         { value: 'other', label: 'Other' },
     ];
 
-    const projectOptions = [
-        { value: '', label: 'Select a project (optional)' },
-        ...projectsList.map((p) => ({ value: p.id.toString(), label: p.title })),
-    ];
-
-    const goalOptions = [
-        { value: '', label: 'Select a goal (optional)' },
-        ...goalsList.map((g) => ({ value: g.id.toString(), label: g.title })),
-    ];
-
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
         presetProject
@@ -122,7 +110,7 @@ export default function ResourcesCreate({ projects: projectsList, goals: goalsLi
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            {presetProject ? (
+                            {presetProject && (
                                 <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm dark:border-stone-800 dark:bg-stone-900">
                                     <span className="text-stone-500 dark:text-stone-400">Project:</span>
                                     <Link
@@ -132,19 +120,9 @@ export default function ResourcesCreate({ projects: projectsList, goals: goalsLi
                                         {presetProject.title}
                                     </Link>
                                 </div>
-                            ) : (
-                                presetGoal && (
-                                    <Select
-                                        label="Project (Optional)"
-                                        value={data.project_id}
-                                        onChange={(e) => setData('project_id', e.target.value)}
-                                        options={projectOptions}
-                                        placeholder="Link to a project"
-                                    />
-                                )
                             )}
 
-                            {presetGoal ? (
+                            {presetGoal && (
                                 <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm dark:border-stone-800 dark:bg-stone-900">
                                     <span className="text-stone-500 dark:text-stone-400">Goal:</span>
                                     <Link
@@ -154,16 +132,6 @@ export default function ResourcesCreate({ projects: projectsList, goals: goalsLi
                                         {presetGoal.title}
                                     </Link>
                                 </div>
-                            ) : (
-                                presetProject && (
-                                    <Select
-                                        label="Goal (Optional)"
-                                        value={data.goal_id}
-                                        onChange={(e) => setData('goal_id', e.target.value)}
-                                        options={goalOptions}
-                                        placeholder="Link to a goal"
-                                    />
-                                )
                             )}
 
                             <Input

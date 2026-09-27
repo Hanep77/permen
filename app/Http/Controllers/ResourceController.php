@@ -42,15 +42,7 @@ class ResourceController extends Controller
             ? Goal::where('user_id', $userId)->find(request()->query('goal_id'), ['id', 'title'])
             : null;
 
-        $projects = Project::where('user_id', $userId)
-            ->get(['id', 'title']);
-
-        $goals = Goal::where('user_id', $userId)
-            ->get(['id', 'title']);
-
         return Inertia::render('resources/create', [
-            'projects' => $projects,
-            'goals' => $goals,
             'preset' => [
                 'project' => $project,
                 'goal' => $goal,
