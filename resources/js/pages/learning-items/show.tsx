@@ -1,7 +1,7 @@
 "use client";
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Edit, Trash2, Calendar, Clock, BookOpen, GraduationCap, Play, FileText, Book, CheckCircle2, Plus } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Calendar, BookOpen, GraduationCap, Play, FileText, Book, CheckCircle2, Plus } from 'lucide-react';
 import learningItems from '@/routes/learning-items';
 import goals from '@/routes/goals';
 import resources from '@/routes/resources';
@@ -46,13 +46,17 @@ export default function LearningItemsShow({ learningItem }: Props) {
 
     const getTypeIcon = (type: string) => {
         switch (type) {
-            case 'book': return <Book className="size-5" />;
-            case 'course': return <GraduationCap className="size-5" />;
-            case 'video': return <Play className="size-5" />;
-            case 'paper': return <FileText className="size-5" />;
-            default: return <BookOpen className="size-5" />;
+            case 'book': return <Book className="size-4" />;
+            case 'course': return <GraduationCap className="size-4" />;
+            case 'video':
+            case 'tutorial': return <Play className="size-4" />;
+            case 'paper':
+            case 'article': return <FileText className="size-4" />;
+            default: return <BookOpen className="size-4" />;
         }
     };
+
+    const formatType = (type: string) => type.charAt(0).toUpperCase() + type.slice(1);
 
     const getTodoStatusVariant = (status: string) => {
         switch (status) {
@@ -122,170 +126,176 @@ export default function LearningItemsShow({ learningItem }: Props) {
                     </div>
                 </div>
 
-                <div className="space-y-6">
-                    <Card>
-                        <CardHeader className="flex flex-row items-start justify-between">
-                            <div className="flex items-center gap-4">
-                                <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-emerald-100 dark:bg-emerald-900/30">
-                                    {getTypeIcon(learningItem.type)}
-                                </div>
+                <div className="grid gap-6 lg:grid-cols-3">
+                    <div className="lg:col-span-2 space-y-6">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between">
+                                <CardTitle>Description</CardTitle>
+                                <Badge variant={learningItem.completed_at ? 'success' : 'default'}>
+                                    {learningItem.completed_at ? 'Completed' : 'In Progress'}
+                                </Badge>
+                            </CardHeader>
+                            <CardContent>
+                                <MarkdownContent content={learningItem.description} />
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between">
                                 <div>
-                                    <CardTitle>{learningItem.title}</CardTitle>
-                                    <Badge variant={learningItem.completed_at ? 'success' : 'default'} className="mt-1">
-                                        {learningItem.completed_at ? 'Completed' : 'In Progress'}
-                                    </Badge>
+                                    <CardTitle>Todos</CardTitle>
+                                    <CardDescription>
+                                        {learningItem.todos.length} todo{learningItem.todos.length !== 1 ? 's' : ''}
+                                    </CardDescription>
                                 </div>
-                            </div>
-                            {learningItem.completed_at && (
-                                <CheckCircle2 className="size-8 text-green-500" />
-                            )}
-                        </CardHeader>
-                        <CardContent>
-                            <MarkdownContent content={learningItem.description} />
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <div>
-                                <CardTitle>Todos</CardTitle>
-                                <CardDescription>
-                                    {learningItem.todos.length} todo{learningItem.todos.length !== 1 ? 's' : ''}
-                                </CardDescription>
-                            </div>
-                            <Button
-                                size="sm"
-                                as={Link}
-                                href={todos.create.url({ query: { learning_item_id: learningItem.id } })}
-                            >
-                                <Plus className="size-4" />
-                                Add Todo
-                            </Button>
-                        </CardHeader>
-                        <CardContent>
-                            {learningItem.todos.length === 0 ? (
-                                <p className="text-sm text-stone-500 dark:text-stone-400">
-                                    No todos yet. Create a todo to track steps for this learning item.
-                                </p>
-                            ) : (
-                                <div className="space-y-3">
-                                    {learningItem.todos.map((todo) => (
-                                        <Link
-                                            key={todo.id}
-                                            href={todos.show(todo.id).url}
-                                            className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
-                                        >
-                                            <div>
-                                                <p className="font-medium text-stone-900 dark:text-stone-100">
-                                                    {todo.title}
-                                                </p>
-                                                <Badge variant={getTodoStatusVariant(todo.status)}>
-                                                    {todo.status.charAt(0).toUpperCase() + todo.status.slice(1)}
-                                                </Badge>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between">
-                            <div>
-                                <CardTitle>Resources</CardTitle>
-                                <CardDescription>
-                                    {learningItem.resources.length} resource{learningItem.resources.length !== 1 ? 's' : ''}
-                                </CardDescription>
-                            </div>
-                            <Button
-                                size="sm"
-                                as={Link}
-                                href={resources.create.url({ query: { learning_item_id: learningItem.id } })}
-                            >
-                                <Plus className="size-4" />
-                                Add Resource
-                            </Button>
-                        </CardHeader>
-                        <CardContent>
-                            {learningItem.resources.length === 0 ? (
-                                <p className="text-sm text-stone-500 dark:text-stone-400">
-                                    No resources yet. Save a resource to reference for this learning item.
-                                </p>
-                            ) : (
-                                <div className="space-y-3">
-                                    {learningItem.resources.map((resource) => (
-                                        <Link
-                                            key={resource.id}
-                                            href={resources.show(resource.id).url}
-                                            className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
-                                        >
-                                            <div>
-                                                <p className="font-medium text-stone-900 dark:text-stone-100">
-                                                    {resource.title}
-                                                </p>
-                                                <p className="text-sm text-stone-500 dark:text-stone-400 capitalize">
-                                                    {resource.type}
-                                                </p>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Progress</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <dl className="space-y-4 text-sm">
-                                <div className="flex items-center justify-between">
-                                    <dt className="text-stone-500 dark:text-stone-400 flex items-center gap-2">
-                                        <BookOpen className="size-4" /> Type
-                                    </dt>
-                                    <dd className="font-medium capitalize">{learningItem.type}</dd>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <dt className="text-stone-500 dark:text-stone-400 flex items-center gap-2">
-                                        <Calendar className="size-4" /> Started
-                                    </dt>
-                                    <dd className="font-medium">{new Date(learningItem.start_at).toLocaleDateString()}</dd>
-                                </div>
-                                {learningItem.completed_at && (
-                                    <div className="flex items-center justify-between">
-                                        <dt className="text-stone-500 dark:text-stone-400 flex items-center gap-2">
-                                            <CheckCircle2 className="size-4" /> Completed
-                                        </dt>
-                                        <dd className="font-medium">{new Date(learningItem.completed_at).toLocaleDateString()}</dd>
+                                <Button
+                                    size="sm"
+                                    as={Link}
+                                    href={todos.create.url({ query: { learning_item_id: learningItem.id } })}
+                                >
+                                    <Plus className="size-4" />
+                                    Add Todo
+                                </Button>
+                            </CardHeader>
+                            <CardContent>
+                                {learningItem.todos.length === 0 ? (
+                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                        No todos yet. Create a todo to track steps for this learning item.
+                                    </p>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {learningItem.todos.map((todo) => (
+                                            <Link
+                                                key={todo.id}
+                                                href={todos.show(todo.id).url}
+                                                className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                            >
+                                                <div>
+                                                    <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                        {todo.title}
+                                                    </p>
+                                                    <Badge variant={getTodoStatusVariant(todo.status)}>
+                                                        {todo.status.charAt(0).toUpperCase() + todo.status.slice(1)}
+                                                    </Badge>
+                                                </div>
+                                            </Link>
+                                        ))}
                                     </div>
                                 )}
-                            </dl>
-                        </CardContent>
-                    </Card>
+                            </CardContent>
+                        </Card>
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Info</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <dl className="space-y-4 text-sm">
-                                <div className="flex justify-between">
-                                    <dt className="text-stone-500 dark:text-stone-400">Created</dt>
-                                    <dd className="font-medium">{new Date(learningItem.created_at).toLocaleDateString()}</dd>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between">
+                                <div>
+                                    <CardTitle>Resources</CardTitle>
+                                    <CardDescription>
+                                        {learningItem.resources.length} resource{learningItem.resources.length !== 1 ? 's' : ''}
+                                    </CardDescription>
                                 </div>
-                                <div className="flex justify-between">
-                                    <dt className="text-stone-500 dark:text-stone-400">Updated</dt>
-                                    <dd className="font-medium">{new Date(learningItem.updated_at).toLocaleDateString()}</dd>
+                                <Button
+                                    size="sm"
+                                    as={Link}
+                                    href={resources.create.url({ query: { learning_item_id: learningItem.id } })}
+                                >
+                                    <Plus className="size-4" />
+                                    Add Resource
+                                </Button>
+                            </CardHeader>
+                            <CardContent>
+                                {learningItem.resources.length === 0 ? (
+                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                        No resources yet. Save a resource to reference for this learning item.
+                                    </p>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {learningItem.resources.map((resource) => (
+                                            <Link
+                                                key={resource.id}
+                                                href={resources.show(resource.id).url}
+                                                className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                            >
+                                                <div>
+                                                    <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                        {resource.title}
+                                                    </p>
+                                                    <p className="text-sm text-stone-500 dark:text-stone-400 capitalize">
+                                                        {resource.type}
+                                                    </p>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    <div className="space-y-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Status</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-stone-500 dark:text-stone-400">Current Status</span>
+                                        <Badge variant={learningItem.completed_at ? 'success' : 'default'} className="text-base px-3 py-1">
+                                            {learningItem.completed_at ? 'Completed' : 'In Progress'}
+                                        </Badge>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-stone-500 dark:text-stone-400">Type</span>
+                                        <span className="inline-flex items-center gap-1.5 text-sm font-medium">
+                                            {getTypeIcon(learningItem.type)}
+                                            {formatType(learningItem.type)}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-stone-500 dark:text-stone-400">Started</span>
+                                        <span className="text-sm font-medium">
+                                            <Calendar className="size-4 inline mr-1" />
+                                            {new Date(learningItem.start_at).toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                    {learningItem.completed_at && (
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-sm text-stone-500 dark:text-stone-400">Completed</span>
+                                            <span className="text-sm font-medium">
+                                                <CheckCircle2 className="size-4 inline mr-1" />
+                                                {new Date(learningItem.completed_at).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="flex justify-between">
-                                    <dt className="text-stone-500 dark:text-stone-400">Author</dt>
-                                    <dd className="font-medium">{learningItem.user.name}</dd>
-                                </div>
-                            </dl>
-                        </CardContent>
-                    </Card>
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Quick Actions</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                                <Button
+                                    as={Link}
+                                    href={todos.create.url({ query: { learning_item_id: learningItem.id } })}
+                                    className="w-full justify-start"
+                                >
+                                    <Plus className="size-4" />
+                                    Add Todo
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    as={Link}
+                                    href={resources.create.url({ query: { learning_item_id: learningItem.id } })}
+                                    className="w-full justify-start"
+                                >
+                                    <Plus className="size-4" />
+                                    Add Resource
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </div>
                 </div>
 
                 <ConfirmDialog
