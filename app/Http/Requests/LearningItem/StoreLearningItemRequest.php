@@ -16,6 +16,8 @@ class StoreLearningItemRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'goal_id' => ['nullable', Rule::exists('goals', 'id')->where('user_id', $this->user()->id)],
+            'context' => ['nullable', Rule::in(['independent', 'goal'])],
             'title' => ['required', 'string', 'max:100'],
             'description' => ['required', 'string'],
             'type' => ['required', Rule::in(LearningItemType::values())],

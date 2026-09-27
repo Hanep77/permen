@@ -3,6 +3,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save } from 'lucide-react';
 import learningItems from '@/routes/learning-items';
+import goals from '@/routes/goals';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,8 +11,27 @@ import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
 
-export default function LearningItemsCreate() {
+interface ParentPreset {
+    id: number;
+    title: string;
+}
+
+interface Props {
+    preset: {
+        goal: ParentPreset | null;
+    };
+}
+
+export default function LearningItemsCreate({ preset }: Props) {
+    const presetGoal = preset.goal;
+    const context = presetGoal ? 'goal' : 'independent';
+
+    const backHref = presetGoal ? goals.show(presetGoal.id).url : learningItems.index().url;
+    const backLabel = presetGoal ? `Back to ${presetGoal.title}` : 'Back to Learning Items';
+
     const { data, setData, post, processing, errors } = useForm({
+        goal_id: presetGoal ? presetGoal.id.toString() : '',
+        context: context,
         title: '',
         description: '',
         type: 'article',
@@ -40,7 +60,9 @@ export default function LearningItemsCreate() {
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
-        { title: 'Learning Items', href: learningItems.index().url },
+        presetGoal
+            ? { title: presetGoal.title, href: goals.show(presetGoal.id).url }
+            : { title: 'Learning Items', href: learningItems.index().url },
         { title: 'Create', href: learningItems.create().url },
     ];
 
@@ -54,11 +76,11 @@ export default function LearningItemsCreate() {
             <div className="space-y-6">
                 <div className="flex items-center gap-4">
                     <Link
-                        href={learningItems.index().url}
+                        href={backHref}
                         className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-stone-700 dark:text-stone-400 dark:hover:text-stone-200"
                     >
                         <ArrowLeft className="size-4" />
-                        Back to Learning Items
+                        {backLabel}
                     </Link>
                     <div>
                         <h1 className="text-3xl font-semibold tracking-tight">Create Learning Item</h1>
@@ -74,6 +96,18 @@ export default function LearningItemsCreate() {
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-6">
+                            {presetGoal && (
+                                <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm dark:border-stone-800 dark:bg-stone-900">
+                                    <span className="text-stone-500 dark:text-stone-400">Goal:</span>
+                                    <Link
+                                        href={goals.show(presetGoal.id).url}
+                                        className="font-medium text-emerald-600 hover:underline dark:text-emerald-400"
+                                    >
+                                        {presetGoal.title}
+                                    </Link>
+                                </div>
+                            )}
+
                             <Input
                                 label="Title"
                                 value={data.title}
@@ -125,7 +159,7 @@ export default function LearningItemsCreate() {
                                 <Button
                                     variant="ghost"
                                     as={Link}
-                                    href={learningItems.index().url}
+                                    href={backHref}
                                 >
                                     <ArrowLeft className="size-4" />
                                     Cancel

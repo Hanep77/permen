@@ -3,6 +3,8 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Edit, Trash2, Calendar, Clock, BookOpen, GraduationCap, Play, FileText, Book, CheckCircle2, Plus } from 'lucide-react';
 import learningItems from '@/routes/learning-items';
+import goals from '@/routes/goals';
+import resources from '@/routes/resources';
 import todos from '@/routes/todos';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,7 +22,9 @@ interface Props {
         start_at: string;
         completed_at?: string;
         user: { name: string };
+        goal: { id: number; title: string } | null;
         todos: Array<{ id: number; title: string; status: string }>;
+        resources: Array<{ id: number; title: string; type: string }>;
         created_at: string;
         updated_at: string;
     };
@@ -84,6 +88,17 @@ export default function LearningItemsShow({ learningItem }: Props) {
                         <div>
                             <h1 className="text-3xl font-semibold tracking-tight">{learningItem.title}</h1>
                             <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                                {learningItem.goal ? (
+                                    <>
+                                        <Link
+                                            href={goals.show(learningItem.goal.id).url}
+                                            className="text-emerald-600 hover:underline dark:text-emerald-400"
+                                        >
+                                            {learningItem.goal.title}
+                                        </Link>{' '}
+                                        ·
+                                    </>
+                                ) : null}
                                 Created by {learningItem.user.name} · {new Date(learningItem.created_at).toLocaleDateString()}
                             </p>
                         </div>
@@ -168,6 +183,51 @@ export default function LearningItemsShow({ learningItem }: Props) {
                                                 <Badge variant={getTodoStatusVariant(todo.status)}>
                                                     {todo.status.charAt(0).toUpperCase() + todo.status.slice(1)}
                                                 </Badge>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle>Resources</CardTitle>
+                                <CardDescription>
+                                    {learningItem.resources.length} resource{learningItem.resources.length !== 1 ? 's' : ''}
+                                </CardDescription>
+                            </div>
+                            <Button
+                                size="sm"
+                                as={Link}
+                                href={resources.create.url({ query: { learning_item_id: learningItem.id } })}
+                            >
+                                <Plus className="size-4" />
+                                Add Resource
+                            </Button>
+                        </CardHeader>
+                        <CardContent>
+                            {learningItem.resources.length === 0 ? (
+                                <p className="text-sm text-stone-500 dark:text-stone-400">
+                                    No resources yet. Save a resource to reference for this learning item.
+                                </p>
+                            ) : (
+                                <div className="space-y-3">
+                                    {learningItem.resources.map((resource) => (
+                                        <Link
+                                            key={resource.id}
+                                            href={resources.show(resource.id).url}
+                                            className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                        >
+                                            <div>
+                                                <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                    {resource.title}
+                                                </p>
+                                                <p className="text-sm text-stone-500 dark:text-stone-400 capitalize">
+                                                    {resource.type}
+                                                </p>
                                             </div>
                                         </Link>
                                     ))}

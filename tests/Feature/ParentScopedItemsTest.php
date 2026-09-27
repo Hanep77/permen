@@ -332,3 +332,214 @@ test('learning item show page lists its todos', function () {
             ->has('learningItem.todos', 1)
             ->where('learningItem.todos.0.title', 'Step one'));
 });
+
+function learningItemPayload(array $overrides = []): array
+{
+    return [
+        'title' => 'Test Learning Item',
+        'description' => 'Learning description',
+        'type' => 'book',
+        'start_at' => now()->toDateTimeString(),
+        ...$overrides,
+    ];
+}
+
+function resourcePayload(array $overrides = []): array
+{
+    return [
+        'title' => 'Test Resource',
+        'description' => 'Resource description',
+        'url' => 'https://example.com',
+        'type' => 'article',
+        ...$overrides,
+    ];
+}
+
+test('storing a learning item in goal context links it and redirects to the goal', function () {
+    $user = createUser();
+    $goal = createGoal($user);
+    $this->actingAs($user);
+
+    $response = $this->post(route('learning-items.store'), [
+        ...learningItemPayload(),
+        'goal_id' => $goal->id,
+        'context' => 'goal',
+    ]);
+
+    $response->assertRedirect(route('goals.show', $goal));
+    $this->assertDatabaseHas('learning_items', [
+        'user_id' => $user->id,
+        'title' => 'Test Learning Item',
+        'goal_id' => $goal->id,
+    ]);
+});
+
+test('storing a learning item without goal context stays independent even with a tampered goal id', function () {
+    $user = createUser();
+    $goal = createGoal($user);
+    $this->actingAs($user);
+
+    $response = $this->post(route('learning-items.store'), [
+        ...learningItemPayload(),
+        'goal_id' => $goal->id,
+    ]);
+
+    $learningItem = LearningItem::firstWhere('title', 'Test Learning Item');
+
+    expect($learningItem->goal_id)->toBeNull();
+    $response->assertRedirect(route('learning-items.show', $learningItem));
+});
+
+test('storing a learning item with another users goal id fails validation', function () {
+    $user = createUser();
+    $otherUser = createUser();
+    $foreignGoal = createGoal($otherUser);
+    $this->actingAs($user);
+
+    $response = $this->post(route('learning-items.store'), [
+        ...learningItemPayload(),
+        'goal_id' => $foreignGoal->id,
+        'context' => 'goal',
+    ]);
+
+    $response->assertInvalid('goal_id');
+    $this->assertDatabaseCount('learning_items', 0);
+});
+
+test('storing a resource in learning item context links it and redirects to the learning item', function () {
+    $user = createUser();
+    $learningItem = createLearningItem($user);
+    $this->actingAs($user);
+
+    $response = $this->post(route('resources.store'), [
+        ...resourcePayload(),
+        'learning_item_id' => $learningItem->id,
+        'context' => 'learning_item',
+    ]);
+
+    $response->assertRedirect(route('learning-items.show', $learningItem));
+    $this->assertDatabaseHas('resources', [
+        'user_id' => $user->id,
+        'title' => 'Test Resource',
+        'learning_item_id' => $learningItem->id,
+    ]);
+});
+
+test('storing a resource without learning item context stays independent even with a tampered id', function () {
+    $user = createUser();
+    $learningItem = createLearningItem($user);
+    $this->actingAs($user);
+
+    $response = $this->post(route('resources.store'), [
+        ...resourcePayload(),
+        'learning_item_id' => $learningItem->id,
+    ]);
+
+    $resource = Resource::firstWhere('title', 'Test Resource');
+
+    expect($resource->learning_item_id)->toBeNull();
+    $response->assertRedirect(route('resources.show', $resource));
+});
+
+test('storing a resource with another users learning item id fails validation', function () {
+    $user = createUser();
+    $otherUser = createUser();
+    $foreignItem = createLearningItem($otherUser);
+    $this->actingAs($user);
+
+    $response = $this->post(route('resources.store'), [
+        ...resourcePayload(),
+        'learning_item_id' => $foreignItem->id,
+        'context' => 'learning_item',
+    ]);
+
+    $response->assertInvalid('learning_item_id');
+    $this->assertDatabaseCount('resources', 0);
+});
+
+test('resource index excludes learning item resources by default but includes them with scope all', function () {
+    $user = createUser();
+    $learningItem = createLearningItem($user);
+    $this->actingAs($user);
+
+    Resource::create([...resourcePayload(['user_id' => $user->id, 'title' => 'Independent'])]);
+    Resource::create([...resourcePayload(['user_id' => $user->id, 'title' => 'Learning linked', 'learning_item_id' => $learningItem->id])]);
+
+    $this->get(route('resources.index'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('resources/index')
+            ->has('resources.data', 1)
+            ->where('resources.data.0.title', 'Independent'));
+
+    $this->get(route('resources.index', ['scope' => 'all']))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('resources/index')
+            ->has('resources.data', 2));
+});
+
+test('goal show page lists its learning items', function () {
+    $user = createUser();
+    $goal = createGoal($user);
+    $this->actingAs($user);
+
+    LearningItem::create([...learningItemPayload(['user_id' => $user->id, 'title' => 'Goal learning', 'goal_id' => $goal->id])]);
+
+    $this->get(route('goals.show', $goal))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('goals/show')
+            ->has('goal.learning_items', 1)
+            ->where('goal.learning_items.0.title', 'Goal learning'));
+});
+
+test('learning item show page lists its resources and goal', function () {
+    $user = createUser();
+    $goal = createGoal($user);
+    $learningItem = createLearningItem($user);
+    $learningItem->update(['goal_id' => $goal->id]);
+    $this->actingAs($user);
+
+    Resource::create([...resourcePayload(['user_id' => $user->id, 'title' => 'Linked resource', 'learning_item_id' => $learningItem->id])]);
+
+    $this->get(route('learning-items.show', $learningItem))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('learning-items/show')
+            ->where('learningItem.goal.id', $goal->id)
+            ->has('learningItem.resources', 1)
+            ->where('learningItem.resources.0.title', 'Linked resource'));
+});
+
+test('learning item create presets an owned goal and ignores a foreign one', function () {
+    $user = createUser();
+    $otherUser = createUser();
+    $goal = createGoal($user);
+    $foreignGoal = createGoal($otherUser);
+    $this->actingAs($user);
+
+    $this->get(route('learning-items.create', ['goal_id' => $goal->id]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('learning-items/create')
+            ->where('preset.goal.id', $goal->id));
+
+    $this->get(route('learning-items.create', ['goal_id' => $foreignGoal->id]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('preset.goal', null));
+});
+
+test('resource create presets an owned learning item and ignores a foreign one', function () {
+    $user = createUser();
+    $otherUser = createUser();
+    $learningItem = createLearningItem($user);
+    $foreignItem = createLearningItem($otherUser);
+    $this->actingAs($user);
+
+    $this->get(route('resources.create', ['learning_item_id' => $learningItem->id]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('resources/create')
+            ->where('preset.learningItem.id', $learningItem->id)
+            ->where('preset.project', null)
+            ->where('preset.goal', null));
+
+    $this->get(route('resources.create', ['learning_item_id' => $foreignItem->id]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('preset.learningItem', null));
+});

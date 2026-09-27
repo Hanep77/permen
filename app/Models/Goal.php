@@ -29,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Note> $notes
  * @property-read Collection<int, \App\Models\Resource> $resources
  * @property-read Collection<int, Todo> $todos
+ * @property-read Collection<int, LearningItem> $learningItems
  *
  * @method static \Database\Factories\GoalFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<\App\Models\Goal> whereUserId($value)
@@ -91,6 +92,11 @@ class Goal extends Model
     public function todos(): HasMany
     {
         return $this->hasMany(Todo::class);
+    }
+
+    public function learningItems(): HasMany
+    {
+        return $this->hasMany(LearningItem::class);
     }
 
     public function scopeActive($query)

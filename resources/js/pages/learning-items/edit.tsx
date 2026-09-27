@@ -13,16 +13,19 @@ import type { BreadcrumbItem } from '@/types/navigation';
 interface Props {
     learningItem: {
         id: number;
+        goal_id: number | null;
         title: string;
         description: string;
         type: string;
         start_at: string;
         completed_at?: string;
     };
+    goals: Array<{ id: number; title: string }>;
 }
 
-export default function LearningItemsEdit({ learningItem }: Props) {
+export default function LearningItemsEdit({ learningItem, goals: goalsList }: Props) {
     const { data, setData, put, processing, errors } = useForm({
+        goal_id: learningItem.goal_id?.toString() || '',
         title: learningItem.title,
         description: learningItem.description,
         type: learningItem.type,
@@ -47,6 +50,11 @@ export default function LearningItemsEdit({ learningItem }: Props) {
         { value: 'documentation', label: 'Documentation' },
         { value: 'website', label: 'Website' },
         { value: 'other', label: 'Other' },
+    ];
+
+    const goalOptions = [
+        { value: '', label: 'No goal' },
+        ...goalsList.map((g) => ({ value: g.id.toString(), label: g.title })),
     ];
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -86,6 +94,15 @@ export default function LearningItemsEdit({ learningItem }: Props) {
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-6">
+                            <Select
+                                label="Goal (Optional)"
+                                value={data.goal_id}
+                                onChange={(e) => setData('goal_id', e.target.value)}
+                                options={goalOptions}
+                                error={errors.goal_id}
+                                placeholder="Link to a goal"
+                            />
+
                             <Input
                                 label="Title"
                                 value={data.title}

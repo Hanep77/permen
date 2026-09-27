@@ -5,6 +5,7 @@ import { ArrowLeft, Save } from 'lucide-react';
 import resources from '@/routes/resources'
 import projects from '@/routes/projects'
 import goals from '@/routes/goals';
+import learningItems from '@/routes/learning-items';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,29 +22,42 @@ interface Props {
     preset: {
         project: ParentPreset | null;
         goal: ParentPreset | null;
+        learningItem: ParentPreset | null;
     };
 }
 
 export default function ResourcesCreate({ preset }: Props) {
     const presetProject = preset.project;
     const presetGoal = preset.goal;
-    const context = presetProject ? 'project' : presetGoal ? 'goal' : 'independent';
+    const presetLearningItem = preset.learningItem;
+    const context = presetProject
+        ? 'project'
+        : presetGoal
+          ? 'goal'
+          : presetLearningItem
+            ? 'learning_item'
+            : 'independent';
 
     const backHref = presetProject
         ? projects.show(presetProject.id).url
         : presetGoal
           ? goals.show(presetGoal.id).url
-          : resources.index().url;
+          : presetLearningItem
+            ? learningItems.show(presetLearningItem.id).url
+            : resources.index().url;
 
     const backLabel = presetProject
         ? `Back to ${presetProject.title}`
         : presetGoal
           ? `Back to ${presetGoal.title}`
-          : 'Back to Resources';
+          : presetLearningItem
+            ? `Back to ${presetLearningItem.title}`
+            : 'Back to Resources';
 
     const { data, setData, post, processing, errors } = useForm({
         project_id: presetProject ? presetProject.id.toString() : '',
         goal_id: presetGoal ? presetGoal.id.toString() : '',
+        learning_item_id: presetLearningItem ? presetLearningItem.id.toString() : '',
         context: context,
         title: '',
         description: '',
@@ -76,7 +90,9 @@ export default function ResourcesCreate({ preset }: Props) {
             ? { title: presetProject.title, href: projects.show(presetProject.id).url }
             : presetGoal
               ? { title: presetGoal.title, href: goals.show(presetGoal.id).url }
-              : { title: 'Resources', href: resources.index().url },
+              : presetLearningItem
+                ? { title: presetLearningItem.title, href: learningItems.show(presetLearningItem.id).url }
+                : { title: 'Resources', href: resources.index().url },
         { title: 'Create', href: resources.create().url },
     ];
 
@@ -130,6 +146,18 @@ export default function ResourcesCreate({ preset }: Props) {
                                         className="font-medium text-emerald-600 hover:underline dark:text-emerald-400"
                                     >
                                         {presetGoal.title}
+                                    </Link>
+                                </div>
+                            )}
+
+                            {presetLearningItem && (
+                                <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm dark:border-stone-800 dark:bg-stone-900">
+                                    <span className="text-stone-500 dark:text-stone-400">Learning Item:</span>
+                                    <Link
+                                        href={learningItems.show(presetLearningItem.id).url}
+                                        className="font-medium text-emerald-600 hover:underline dark:text-emerald-400"
+                                    >
+                                        {presetLearningItem.title}
                                     </Link>
                                 </div>
                             )}

@@ -16,6 +16,7 @@ class UpdateLearningItemRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'goal_id' => ['nullable', Rule::exists('goals', 'id')->where('user_id', $this->user()->id)],
             'title' => ['sometimes', 'required', 'string', 'max:100'],
             'description' => ['sometimes', 'required', 'string'],
             'type' => ['sometimes', 'required', Rule::in(LearningItemType::values())],

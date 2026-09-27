@@ -8,6 +8,7 @@ import opportunities from '@/routes/opportunities'
 import notes from '@/routes/notes'
 import resources from '@/routes/resources'
 import todos from '@/routes/todos';
+import learningItems from '@/routes/learning-items';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -30,6 +31,7 @@ interface Props {
         notes: Array<{ id: number; title: string }>;
         resources: Array<{ id: number; title: string }>;
         todos: Array<{ id: number; title: string; status: string }>;
+        learning_items: Array<{ id: number; title: string; type: string }>;
         created_at: string;
         updated_at: string;
     };
@@ -302,6 +304,51 @@ export default function GoalsShow({ goal }: Props) {
                                 )}
                             </CardContent>
                         </Card>
+
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between">
+                                <div>
+                                    <CardTitle>Learning Items</CardTitle>
+                                    <CardDescription>
+                                        {goal.learning_items.length} learning item{goal.learning_items.length !== 1 ? 's' : ''}
+                                    </CardDescription>
+                                </div>
+                                <Button
+                                    size="sm"
+                                    as={Link}
+                                    href={learningItems.create.url({ query: { goal_id: goal.id } })}
+                                >
+                                    <Plus className="size-4" />
+                                    Add Learning Item
+                                </Button>
+                            </CardHeader>
+                            <CardContent>
+                                {goal.learning_items.length === 0 ? (
+                                    <p className="text-sm text-stone-500 dark:text-stone-400">
+                                        No learning items yet. Track what you're learning for this goal.
+                                    </p>
+                                ) : (
+                                    <div className="space-y-3">
+                                        {goal.learning_items.map((item) => (
+                                            <Link
+                                                key={item.id}
+                                                href={learningItems.show(item.id).url}
+                                                className="flex items-center justify-between p-3 rounded-lg border border-stone-200 hover:bg-stone-50 transition-colors dark:border-stone-800 dark:hover:bg-stone-800"
+                                            >
+                                                <div>
+                                                    <p className="font-medium text-stone-900 dark:text-stone-100">
+                                                        {item.title}
+                                                    </p>
+                                                    <p className="text-sm text-stone-500 dark:text-stone-400 capitalize">
+                                                        {item.type}
+                                                    </p>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
                     </div>
 
                     <div className="space-y-6">
@@ -392,6 +439,15 @@ export default function GoalsShow({ goal }: Props) {
                                 >
                                     <Plus className="size-4" />
                                     Add Todo
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    as={Link}
+                                    href={learningItems.create.url({ query: { goal_id: goal.id } })}
+                                    className="w-full justify-start"
+                                >
+                                    <Plus className="size-4" />
+                                    Add Learning Item
                                 </Button>
                             </CardContent>
                         </Card>

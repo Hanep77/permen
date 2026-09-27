@@ -45,7 +45,7 @@ class GoalController extends Controller
     {
         $this->authorize('view', $goal);
 
-        $goal->load(['projects', 'opportunities', 'notes', 'resources', 'todos', 'user']);
+        $goal->load(['projects', 'opportunities', 'notes', 'resources', 'todos', 'learningItems', 'user']);
 
         return Inertia::render('goals/show', [
             'goal' => $goal,

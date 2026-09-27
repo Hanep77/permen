@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $user_id
+ * @property int|null $goal_id
  * @property string $title
  * @property string $description
  * @property string $type
@@ -22,13 +23,16 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User $user
+ * @property-read Goal|null $goal
  * @property-read Collection<int, Todo> $todos
+ * @property-read Collection<int, \App\Models\Resource> $resources
  *
  * @method static \Database\Factories\LearningItemFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<\App\Models\LearningItem> whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<\App\Models\LearningItem> whereGoalId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<\App\Models\LearningItem> whereType($value)
  */
-#[Fillable(['user_id', 'title', 'description', 'type', 'start_at', 'completed_at'])]
+#[Fillable(['user_id', 'goal_id', 'title', 'description', 'type', 'start_at', 'completed_at'])]
 class LearningItem extends Model
 {
     use HasFactory;
@@ -47,9 +51,19 @@ class LearningItem extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function goal(): BelongsTo
+    {
+        return $this->belongsTo(Goal::class);
+    }
+
     public function todos(): HasMany
     {
         return $this->hasMany(Todo::class);
+    }
+
+    public function resources(): HasMany
+    {
+        return $this->hasMany(Resource::class);
     }
 
     public function scopeCompleted($query)

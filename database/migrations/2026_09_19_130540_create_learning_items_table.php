@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('learning_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('goal_id')->nullable()->constrained();
             $table->string('title', 100);
             $table->text('description')->nullable();
             $table->enum('type', ['book', 'course', 'tutorial', 'paper', 'article', 'video', 'documentation', 'website', 'other']);

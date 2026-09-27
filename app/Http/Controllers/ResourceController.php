@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Resource\StoreResourceRequest;
 use App\Http\Requests\Resource\UpdateResourceRequest;
 use App\Models\Goal;
+use App\Models\LearningItem;
 use App\Models\Project;
 use App\Models\Resource;
 use Illuminate\Http\RedirectResponse;
@@ -15,10 +16,10 @@ class ResourceController extends Controller
 {
     public function index(): Response
     {
-        $resources = Resource::with(['project', 'goal', 'user'])
+        $resources = Resource::with(['project', 'goal', 'learningItem', 'user'])
             ->where('user_id', request()->user()->id)
             ->when(request()->query('scope') !== 'all', function ($query) {
-                $query->whereNull('project_id')->whereNull('goal_id');
+                $query->whereNull('project_id')->whereNull('goal_id')->whereNull('learning_item_id');
             })
             ->latest()
             ->paginate(10)
@@ -26,7 +27,7 @@ class ResourceController extends Controller
 
         return Inertia::render('resources/index', [
             'resources' => $resources,
-            'filters' => request()->only(['type', 'project_id', 'goal_id', 'search', 'scope']),
+            'filters' => request()->only(['type', 'project_id', 'goal_id', 'learning_item_id', 'search', 'scope']),
         ]);
     }
 
@@ -42,10 +43,15 @@ class ResourceController extends Controller
             ? Goal::where('user_id', $userId)->find(request()->query('goal_id'), ['id', 'title'])
             : null;
 
+        $learningItem = request()->filled('learning_item_id')
+            ? LearningItem::where('user_id', $userId)->find(request()->query('learning_item_id'), ['id', 'title'])
+            : null;
+
         return Inertia::render('resources/create', [
             'preset' => [
                 'project' => $project,
                 'goal' => $goal,
+                'learningItem' => $learningItem,
             ],
         ]);
     }
@@ -59,6 +65,7 @@ class ResourceController extends Controller
         if ($context === 'independent') {
             $validated['project_id'] = null;
             $validated['goal_id'] = null;
+            $validated['learning_item_id'] = null;
         }
 
         $resource = Resource::create([
@@ -69,9 +76,10 @@ class ResourceController extends Controller
         $parentTargets = [
             'project' => $resource->project_id ? ['projects.show', $resource->project_id] : null,
             'goal' => $resource->goal_id ? ['goals.show', $resource->goal_id] : null,
+            'learning_item' => $resource->learning_item_id ? ['learning-items.show', $resource->learning_item_id] : null,
         ];
 
-        foreach (array_unique([$context, 'project', 'goal']) as $key) {
+        foreach (array_unique([$context, 'project', 'goal', 'learning_item']) as $key) {
             if (! empty($parentTargets[$key])) {
                 return redirect()->route(...$parentTargets[$key])
                     ->with('success', 'Resource created successfully.');
@@ -86,7 +94,7 @@ class ResourceController extends Controller
     {
         $this->authorize('view', $resource);
 
-        $resource->load(['project', 'goal', 'user']);
+        $resource->load(['project', 'goal', 'learningItem', 'user']);
 
         return Inertia::render('resources/show', [
             'resource' => $resource,
@@ -103,10 +111,14 @@ class ResourceController extends Controller
         $goals = Goal::where('user_id', request()->user()->id)
             ->get(['id', 'title']);
 
+        $learningItems = LearningItem::where('user_id', request()->user()->id)
+            ->get(['id', 'title']);
+
         return Inertia::render('resources/edit', [
             'resource' => $resource,
             'projects' => $projects,
             'goals' => $goals,
+            'learningItems' => $learningItems,
         ]);
     }
 

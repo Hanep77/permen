@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LearningItem\StoreLearningItemRequest;
 use App\Http\Requests\LearningItem\UpdateLearningItemRequest;
+use App\Models\Goal;
 use App\Models\LearningItem;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -13,7 +14,7 @@ class LearningItemController extends Controller
 {
     public function index(): Response
     {
-        $learningItems = LearningItem::with('user')
+        $learningItems = LearningItem::with(['user', 'goal'])
             ->where('user_id', request()->user()->id)
             ->latest()
             ->paginate(10)
@@ -27,15 +28,38 @@ class LearningItemController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('learning-items/create');
+        $userId = request()->user()->id;
+
+        $goal = request()->filled('goal_id')
+            ? Goal::where('user_id', $userId)->find(request()->query('goal_id'), ['id', 'title'])
+            : null;
+
+        return Inertia::render('learning-items/create', [
+            'preset' => [
+                'goal' => $goal,
+            ],
+        ]);
     }
 
     public function store(StoreLearningItemRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
+        $context = $validated['context'] ?? 'independent';
+        unset($validated['context']);
+
+        if ($context === 'independent') {
+            $validated['goal_id'] = null;
+        }
+
         $learningItem = LearningItem::create([
-            ...$request->validated(),
+            ...$validated,
             'user_id' => $request->user()->id,
         ]);
+
+        if ($context === 'goal' && $learningItem->goal_id) {
+            return redirect()->route('goals.show', $learningItem->goal_id)
+                ->with('success', 'Learning item created successfully.');
+        }
 
         return redirect()->route('learning-items.show', $learningItem)
             ->with('success', 'Learning item created successfully.');
@@ -45,7 +69,7 @@ class LearningItemController extends Controller
     {
         $this->authorize('view', $learningItem);
 
-        $learningItem->load(['user', 'todos']);
+        $learningItem->load(['user', 'goal', 'todos', 'resources']);
 
         return Inertia::render('learning-items/show', [
             'learningItem' => $learningItem,
@@ -56,8 +80,12 @@ class LearningItemController extends Controller
     {
         $this->authorize('update', $learningItem);
 
+        $goals = Goal::where('user_id', request()->user()->id)
+            ->get(['id', 'title']);
+
         return Inertia::render('learning-items/edit', [
             'learningItem' => $learningItem,
+            'goals' => $goals,
         ]);
     }
 

@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
  * @property int $user_id
  * @property int|null $project_id
  * @property int|null $goal_id
+ * @property int|null $learning_item_id
  * @property string $title
  * @property string $description
  * @property string $url
@@ -23,13 +24,15 @@ use Illuminate\Support\Carbon;
  * @property-read User $user
  * @property-read Project|null $project
  * @property-read Goal|null $goal
+ * @property-read LearningItem|null $learningItem
  *
  * @method static \Database\Factories\ResourceFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<\App\Models\Resource> whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<\App\Models\Resource> whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<\App\Models\Resource> whereGoalId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<\App\Models\Resource> whereLearningItemId($value)
  */
-#[Fillable(['user_id', 'project_id', 'goal_id', 'title', 'description', 'url', 'type'])]
+#[Fillable(['user_id', 'project_id', 'goal_id', 'learning_item_id', 'title', 'description', 'url', 'type'])]
 class Resource extends Model
 {
     use HasFactory;
@@ -54,5 +57,10 @@ class Resource extends Model
     public function goal(): BelongsTo
     {
         return $this->belongsTo(Goal::class);
+    }
+
+    public function learningItem(): BelongsTo
+    {
+        return $this->belongsTo(LearningItem::class);
     }
 }

@@ -17,6 +17,7 @@ interface Props {
         id: number;
         project_id: number | null;
         goal_id: number | null;
+        learning_item_id: number | null;
         title: string;
         description: string;
         url: string;
@@ -24,12 +25,14 @@ interface Props {
     };
     projects: Array<{ id: number; title: string }>;
     goals: Array<{ id: number; title: string }>;
+    learningItems: Array<{ id: number; title: string }>;
 }
 
-export default function ResourcesEdit({ resource, projects: projectsList, goals: goalsList }: Props) {
+export default function ResourcesEdit({ resource, projects: projectsList, goals: goalsList, learningItems: learningItemsList }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         project_id: resource.project_id?.toString() || '',
         goal_id: resource.goal_id?.toString() || '',
+        learning_item_id: resource.learning_item_id?.toString() || '',
         title: resource.title,
         description: resource.description,
         url: resource.url,
@@ -63,6 +66,11 @@ export default function ResourcesEdit({ resource, projects: projectsList, goals:
     const goalOptions = [
         { value: '', label: 'Select a goal (optional)' },
         ...goalsList.map((g) => ({ value: g.id.toString(), label: g.title })),
+    ];
+
+    const learningItemOptions = [
+        { value: '', label: 'Select a learning item (optional)' },
+        ...learningItemsList.map((l) => ({ value: l.id.toString(), label: l.title })),
     ];
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -116,6 +124,15 @@ export default function ResourcesEdit({ resource, projects: projectsList, goals:
                                 onChange={(e) => setData('goal_id', e.target.value)}
                                 options={goalOptions}
                                 placeholder="Link to a goal"
+                            />
+
+                            <Select
+                                label="Learning Item (Optional)"
+                                value={data.learning_item_id}
+                                onChange={(e) => setData('learning_item_id', e.target.value)}
+                                options={learningItemOptions}
+                                error={errors.learning_item_id}
+                                placeholder="Link to a learning item"
                             />
 
                             <Input

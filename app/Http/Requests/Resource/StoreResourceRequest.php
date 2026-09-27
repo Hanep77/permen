@@ -18,7 +18,8 @@ class StoreResourceRequest extends FormRequest
         return [
             'project_id' => ['nullable', Rule::exists('projects', 'id')->where('user_id', $this->user()->id)],
             'goal_id' => ['nullable', Rule::exists('goals', 'id')->where('user_id', $this->user()->id)],
-            'context' => ['nullable', Rule::in(['independent', 'project', 'goal'])],
+            'learning_item_id' => ['nullable', Rule::exists('learning_items', 'id')->where('user_id', $this->user()->id)],
+            'context' => ['nullable', Rule::in(['independent', 'project', 'goal', 'learning_item'])],
             'title' => ['required', 'string', 'max:100'],
             'description' => ['required', 'string'],
             'url' => ['required', 'url'],

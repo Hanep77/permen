@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('project_id')->nullable()->constrained();
             $table->foreignId('goal_id')->nullable()->constrained();
+            $table->foreignId('learning_item_id')->nullable()->constrained();
             $table->string('title', 100);
             $table->text('description')->nullable();
             $table->text('url')->nullable();

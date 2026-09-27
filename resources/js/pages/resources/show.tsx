@@ -5,6 +5,7 @@ import { ArrowLeft, Edit, Trash2, Globe, FileText, Calendar } from 'lucide-react
 import resources from '@/routes/resources'
 import projects from '@/routes/projects'
 import goals from '@/routes/goals';
+import learningItems from '@/routes/learning-items';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,12 +18,14 @@ interface Props {
         id: number;
         project_id: number | null;
         goal_id: number | null;
+        learning_item_id: number | null;
         title: string;
         description: string;
         url: string;
         type: string;
         project?: { id: number; title: string } | null;
         goal?: { id: number; title: string } | null;
+        learning_item?: { id: number; title: string } | null;
         user: { name: string };
         created_at: string;
         updated_at: string;
@@ -86,6 +89,17 @@ export default function ResourcesShow({ resource }: Props) {
                                             className="text-blue-600 hover:underline dark:text-blue-400"
                                         >
                                             {resource.goal!.title}
+                                        </Link>{' '}
+                                        ·
+                                    </>
+                                ) : null)}
+                                {(resource.learning_item ? (
+                                    <>
+                                        <Link
+                                            href={learningItems.show(resource.learning_item!.id).url}
+                                            className="text-purple-600 hover:underline dark:text-purple-400"
+                                        >
+                                            {resource.learning_item!.title}
                                         </Link>{' '}
                                         ·
                                     </>
