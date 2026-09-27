@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { TodoStatusToggle } from '@/components/todos/todo-list-item';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
 
@@ -36,6 +37,7 @@ interface Props {
 
 export default function TodosShow({ todo }: Props) {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [status, setStatus] = useState(todo.status);
 
     const { delete: destroy, processing } = useForm({
         _method: 'delete',
@@ -168,9 +170,17 @@ export default function TodosShow({ todo }: Props) {
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm text-stone-500 dark:text-stone-400">Current Status</span>
-                                        <Badge variant={getStatusVariant(todo.status)} className="text-base px-3 py-1">
-                                            {todo.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                        </Badge>
+                                        <span className="flex items-center gap-2">
+                                            <TodoStatusToggle
+                                                todoId={todo.id}
+                                                status={status}
+                                                onStatusChange={setStatus}
+                                                size="sm"
+                                            />
+                                            <Badge variant={getStatusVariant(status)} className="text-base px-3 py-1">
+                                                {status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                            </Badge>
+                                        </span>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm text-stone-500 dark:text-stone-400">Priority</span>

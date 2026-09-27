@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TodoStatus;
 use App\Http\Requests\Todo\StoreTodoRequest;
 use App\Http\Requests\Todo\UpdateTodoRequest;
 use App\Models\Goal;
@@ -138,7 +139,21 @@ class TodoController extends Controller
     {
         $this->authorize('update', $todo);
 
-        $todo->update($request->validated());
+        $validated = $request->validated();
+
+        $isStatusToggle = count($validated) === 1 && array_key_exists('status', $validated);
+
+        if (array_key_exists('status', $validated)) {
+            $validated['completed_at'] = $validated['status'] === TodoStatus::Completed->value
+                ? ($validated['completed_at'] ?? now())
+                : null;
+        }
+
+        $todo->update($validated);
+
+        if ($isStatusToggle) {
+            return back()->with('success', 'Todo updated successfully.');
+        }
 
         return redirect()->route('todos.show', $todo)
             ->with('success', 'Todo updated successfully.');
