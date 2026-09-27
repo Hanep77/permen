@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { SectionVisibilityMenu, useSectionVisibility } from '@/components/crud';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
 
@@ -39,6 +40,22 @@ interface Props {
 
 export default function GoalsShow({ goal }: Props) {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+    const sections = [
+        { id: 'projects', label: 'Projects' },
+        { id: 'opportunities', label: 'Opportunities' },
+        { id: 'notes', label: 'Notes' },
+        { id: 'resources', label: 'Resources' },
+        { id: 'todos', label: 'Todos' },
+        { id: 'learning_items', label: 'Learning Items' },
+    ];
+    const {
+        isVisible: isSectionVisible,
+        toggle: toggleSection,
+        showAll: showAllSections,
+        hiddenCount: hiddenSectionCount,
+        allHidden: allSectionsHidden,
+    } = useSectionVisibility('permen:goals.show:sections', sections);
 
     const { delete: destroy, processing } = useForm({
         _method: 'delete',
@@ -90,6 +107,13 @@ export default function GoalsShow({ goal }: Props) {
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
+                        <SectionVisibilityMenu
+                            sections={sections}
+                            isVisible={isSectionVisible}
+                            onToggle={toggleSection}
+                            onShowAll={showAllSections}
+                            hiddenCount={hiddenSectionCount}
+                        />
                         <Button
                             variant="outline"
                             as={Link}
@@ -120,6 +144,7 @@ export default function GoalsShow({ goal }: Props) {
                             </CardContent>
                         </Card>
 
+                        {isSectionVisible('projects') && (
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between">
                                 <div>
@@ -164,7 +189,9 @@ export default function GoalsShow({ goal }: Props) {
                                 )}
                             </CardContent>
                         </Card>
+                        )}
 
+                        {isSectionVisible('opportunities') && (
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between">
                                 <div>
@@ -209,7 +236,9 @@ export default function GoalsShow({ goal }: Props) {
                                 )}
                             </CardContent>
                         </Card>
+                        )}
 
+                        {isSectionVisible('notes') && (
                         <Card>
                             <CardHeader>
                                 <CardTitle>Notes</CardTitle>
@@ -239,7 +268,9 @@ export default function GoalsShow({ goal }: Props) {
                                 )}
                             </CardContent>
                         </Card>
+                        )}
 
+                        {isSectionVisible('resources') && (
                         <Card>
                             <CardHeader>
                                 <CardTitle>Resources</CardTitle>
@@ -269,7 +300,9 @@ export default function GoalsShow({ goal }: Props) {
                                 )}
                             </CardContent>
                         </Card>
+                        )}
 
+                        {isSectionVisible('todos') && (
                         <Card>
                             <CardHeader>
                                 <CardTitle>Todos</CardTitle>
@@ -304,7 +337,9 @@ export default function GoalsShow({ goal }: Props) {
                                 )}
                             </CardContent>
                         </Card>
+                        )}
 
+                        {isSectionVisible('learning_items') && (
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between">
                                 <div>
@@ -349,6 +384,24 @@ export default function GoalsShow({ goal }: Props) {
                                 )}
                             </CardContent>
                         </Card>
+                        )}
+
+                        {allSectionsHidden && (
+                        <Card>
+                            <CardContent className="pt-6">
+                                <p className="text-sm text-stone-500 dark:text-stone-400">
+                                    All sections are hidden.{' '}
+                                    <button
+                                        type="button"
+                                        onClick={showAllSections}
+                                        className="font-medium text-emerald-600 hover:underline dark:text-emerald-400"
+                                    >
+                                        Show all
+                                    </button>
+                                </p>
+                            </CardContent>
+                        </Card>
+                        )}
                     </div>
 
                     <div className="space-y-6">
