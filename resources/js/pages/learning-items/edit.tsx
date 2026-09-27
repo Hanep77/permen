@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { toDateInputValue } from '@/lib/utils';
 
 interface Props {
     learningItem: {
@@ -29,8 +30,8 @@ export default function LearningItemsEdit({ learningItem, goals: goalsList }: Pr
         title: learningItem.title,
         description: learningItem.description,
         type: learningItem.type,
-        start_at: learningItem.start_at,
-        completed_at: learningItem.completed_at || '',
+        start_at: toDateInputValue(learningItem.start_at),
+        completed_at: toDateInputValue(learningItem.completed_at),
     });
 
     const handleSubmit = (e: React.FormEvent) => {

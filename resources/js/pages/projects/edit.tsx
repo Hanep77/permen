@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { toDateInputValue } from '@/lib/utils';
 
 interface Props {
     project: {
@@ -31,8 +32,8 @@ export default function ProjectsEdit({ project, goals: goalsList }: Props) {
         title: project.title,
         description: project.description,
         status: project.status,
-        start_date: project.start_date,
-        target_date: project.target_date,
+        start_date: toDateInputValue(project.start_date),
+        target_date: toDateInputValue(project.target_date),
     });
 
     const handleSubmit = (e: React.FormEvent) => {

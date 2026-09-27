@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { toDateInputValue } from '@/lib/utils';
 
 interface Props {
     todo: {
@@ -38,7 +39,7 @@ export default function TodosEdit({ todo, projects: projectsList, goals: goalsLi
         description: todo.description,
         status: todo.status,
         priority: todo.priority,
-        due_date: todo.due_date,
+        due_date: toDateInputValue(todo.due_date),
     });
 
     const handleSubmit = (e: React.FormEvent) => {

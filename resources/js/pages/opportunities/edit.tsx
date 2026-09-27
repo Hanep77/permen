@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { toDateInputValue } from '@/lib/utils';
 
 interface Props {
     opportunity: {
@@ -37,7 +38,7 @@ export default function OpportunitiesEdit({ opportunity, goals: goalsList }: Pro
         priority: opportunity.priority,
         estimated_value: opportunity.estimated_value,
         next_action: opportunity.next_action,
-        due_date: opportunity.due_date,
+        due_date: toDateInputValue(opportunity.due_date),
     });
 
     const handleSubmit = (e: React.FormEvent) => {

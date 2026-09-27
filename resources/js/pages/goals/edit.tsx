@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { toDateInputValue } from '@/lib/utils';
 
 interface Props {
     goal: {
@@ -27,8 +28,8 @@ export default function GoalsEdit({ goal }: Props) {
         title: goal.title,
         description: goal.description,
         status: goal.status,
-        start_date: goal.start_date,
-        target_date: goal.target_date,
+        start_date: toDateInputValue(goal.start_date),
+        target_date: toDateInputValue(goal.target_date),
     });
 
     const handleSubmit = (e: React.FormEvent) => {
