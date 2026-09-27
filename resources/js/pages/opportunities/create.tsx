@@ -6,7 +6,7 @@ import opportunities from '@/routes/opportunities'
 import goals from '@/routes/goals';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { MarkdownEditor } from '@/components/ui/markdown-editor';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
@@ -132,10 +132,10 @@ export default function OpportunitiesCreate({ preset }: Props) {
                                 required
                             />
 
-                            <Textarea
+                            <MarkdownEditor
                                 label="Description"
                                 value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(v) => setData('description', v)}
                                 error={errors.description}
                                 placeholder="Describe the opportunity"
                                 required
@@ -190,10 +190,10 @@ export default function OpportunitiesCreate({ preset }: Props) {
                                 />
                             </div>
 
-                            <Textarea
+                            <MarkdownEditor
                                 label="Next Action"
                                 value={data.next_action}
-                                onChange={(e) => setData('next_action', e.target.value)}
+                                onChange={(v) => setData('next_action', v)}
                                 error={errors.next_action}
                                 placeholder="What's the next step?"
                                 required

@@ -19,6 +19,7 @@ import {
     type RelatedRef,
 } from '@/components/crud';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { stripMarkdown } from '@/components/ui/markdown-content';
 
 interface Project {
     id: number;
@@ -96,7 +97,7 @@ export default function ProjectsIndex({
                                 </RelatedLink>
                             )}
                         </div>
-                        <ItemDescription>{project.description}</ItemDescription>
+                        <ItemDescription>{stripMarkdown(project.description)}</ItemDescription>
                         <ItemMeta>
                             <StatusBadge value={project.status} variants={statusVariants.project} />
                             <span>Target: {new Date(project.target_date).toLocaleDateString()}</span>

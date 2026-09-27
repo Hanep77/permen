@@ -16,6 +16,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { SectionVisibilityMenu, useSectionVisibility } from '@/components/crud';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
+import { MarkdownContent } from '@/components/ui/markdown-content';
 
 interface Props {
     goal: {
@@ -138,9 +139,7 @@ export default function GoalsShow({ goal }: Props) {
                                 <CardTitle>Description</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-stone-600 dark:text-stone-400 whitespace-pre-wrap">
-                                    {goal.description}
-                                </p>
+                                <MarkdownContent content={goal.description} />
                             </CardContent>
                         </Card>
 

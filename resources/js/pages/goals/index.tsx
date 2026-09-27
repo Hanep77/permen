@@ -16,6 +16,7 @@ import {
     type Paginated,
 } from '@/components/crud';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { stripMarkdown } from '@/components/ui/markdown-content';
 
 interface Goal {
     id: number;
@@ -79,7 +80,7 @@ export default function GoalsIndex({ goals: goalsData, filters }: { goals: Pagin
                 {goalsData.data.map((goal) => (
                     <CrudListItem key={goal.id} href={goals.show(goal.id).url}>
                         <ItemTitle>{goal.title}</ItemTitle>
-                        <ItemDescription>{goal.description}</ItemDescription>
+                        <ItemDescription>{stripMarkdown(goal.description)}</ItemDescription>
                         <ItemMeta>
                             <StatusBadge value={goal.status} variants={statusVariants.goal} />
                             <span>Target: {new Date(goal.target_date).toLocaleDateString()}</span>

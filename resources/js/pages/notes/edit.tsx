@@ -7,7 +7,7 @@ import projects from '@/routes/projects'
 import goals from '@/routes/goals';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { MarkdownEditor } from '@/components/ui/markdown-editor';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
@@ -112,13 +112,13 @@ export default function NotesEdit({ note, projects: projectsList, goals: goalsLi
                                 required
                             />
 
-                            <Textarea
+                            <MarkdownEditor
                                 label="Content"
                                 value={data.content}
-                                onChange={(e) => setData('content', e.target.value)}
+                                onChange={(v) => setData('content', v)}
                                 error={errors.content}
                                 placeholder="Write your note content here..."
-                                className="min-h-[200px]"
+                                height={300}
                                 required
                             />
 

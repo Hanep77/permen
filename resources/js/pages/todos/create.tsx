@@ -8,7 +8,7 @@ import goals from '@/routes/goals';
 import learningItems from '@/routes/learning-items';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { MarkdownEditor } from '@/components/ui/markdown-editor';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BreadcrumbItem } from '@/types/navigation';
@@ -168,10 +168,10 @@ export default function TodosCreate({ preset }: Props) {
                                 required
                             />
 
-                            <Textarea
+                            <MarkdownEditor
                                 label="Description"
                                 value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(v) => setData('description', v)}
                                 error={errors.description}
                                 placeholder="Describe the task"
                                 required

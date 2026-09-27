@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
+import { MarkdownContent } from '@/components/ui/markdown-content';
 
 interface Props {
     opportunity: {
@@ -128,9 +129,7 @@ export default function OpportunitiesShow({ opportunity }: Props) {
                                 <CardTitle>Description</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-stone-600 dark:text-stone-400 whitespace-pre-wrap">
-                                    {opportunity.description}
-                                </p>
+                                <MarkdownContent content={opportunity.description} />
                             </CardContent>
                         </Card>
 
@@ -141,9 +140,7 @@ export default function OpportunitiesShow({ opportunity }: Props) {
                             <CardContent>
                                 <div className="flex items-start gap-3">
                                     <FileText className="size-5 text-stone-400 mt-0.5 shrink-0" />
-                                    <p className="text-stone-600 dark:text-stone-400 whitespace-pre-wrap">
-                                        {opportunity.next_action}
-                                    </p>
+                                    <MarkdownContent content={opportunity.next_action} />
                                 </div>
                             </CardContent>
                         </Card>

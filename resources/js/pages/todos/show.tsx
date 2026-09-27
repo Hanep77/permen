@@ -13,6 +13,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { TodoStatusToggle } from '@/components/todos/todo-list-item';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
+import { MarkdownContent } from '@/components/ui/markdown-content';
 
 interface Props {
     todo: {
@@ -154,9 +155,7 @@ export default function TodosShow({ todo }: Props) {
                                 <CardTitle>Description</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-stone-600 dark:text-stone-400 whitespace-pre-wrap">
-                                    {todo.description}
-                                </p>
+                                <MarkdownContent content={todo.description} />
                             </CardContent>
                         </Card>
                     </div>

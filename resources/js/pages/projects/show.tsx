@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
+import { MarkdownContent } from '@/components/ui/markdown-content';
 
 interface Props {
     project: {
@@ -122,9 +123,7 @@ export default function ProjectsShow({ project }: Props) {
                                 <CardTitle>Description</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-stone-600 dark:text-stone-400 whitespace-pre-wrap">
-                                    {project.description}
-                                </p>
+                                <MarkdownContent content={project.description} />
                             </CardContent>
                         </Card>
 

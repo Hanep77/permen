@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
+import { MarkdownContent } from '@/components/ui/markdown-content';
 
 interface Props {
     note: {
@@ -115,9 +116,7 @@ export default function NotesShow({ note }: Props) {
                             <CardTitle>Content</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="prose prose-stone dark:prose-invert max-w-none">
-                                <p className="whitespace-pre-wrap">{note.content}</p>
-                            </div>
+                            <MarkdownContent content={note.content} />
                         </CardContent>
                     </Card>
 

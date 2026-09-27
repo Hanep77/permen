@@ -21,6 +21,7 @@ import {
     type RelatedRef,
 } from '@/components/crud';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { stripMarkdown } from '@/components/ui/markdown-content';
 
 interface Opportunity {
     id: number;
@@ -117,7 +118,7 @@ export default function OpportunitiesIndex({
                                 </RelatedLink>
                             )}
                         </div>
-                        <ItemDescription>{opp.description}</ItemDescription>
+                        <ItemDescription>{stripMarkdown(opp.description)}</ItemDescription>
                         <ItemMeta>
                             <StatusBadge value={opp.status} variants={statusVariants.opportunity} />
                             <StatusBadge value={opp.priority} variants={statusVariants.priority} />

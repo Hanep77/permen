@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
+import { MarkdownContent } from '@/components/ui/markdown-content';
 
 interface Props {
     resource: {
@@ -147,9 +148,7 @@ export default function ResourcesShow({ resource }: Props) {
                             </Button>
                         </CardHeader>
                         <CardContent>
-                            <div className="prose prose-stone dark:prose-invert max-w-none">
-                                <p className="whitespace-pre-wrap">{resource.description}</p>
-                            </div>
+                            <MarkdownContent content={resource.description} />
                             <div className="mt-4 p-4 bg-stone-50 rounded-lg dark:bg-stone-800">
                                 <p className="text-sm text-stone-600 dark:text-stone-400 break-all">
                                     <strong>URL:</strong> {resource.url}

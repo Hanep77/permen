@@ -23,6 +23,7 @@ import {
     type RelatedRef,
 } from '@/components/crud';
 import type { BreadcrumbItem } from '@/types/navigation';
+import { stripMarkdown } from '@/components/ui/markdown-content';
 
 interface Resource {
     id: number;
@@ -135,7 +136,7 @@ export default function ResourcesIndex({
                                     </RelatedLink>
                                 )}
                             </div>
-                            <ItemDescription>{resource.description}</ItemDescription>
+                            <ItemDescription>{stripMarkdown(resource.description)}</ItemDescription>
                         </Link>
                         <Button
                             variant="ghost"

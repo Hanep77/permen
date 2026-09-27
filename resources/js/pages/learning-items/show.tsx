@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import type { BreadcrumbItem } from '@/types/navigation';
 import { useState } from 'react';
+import { MarkdownContent } from '@/components/ui/markdown-content';
 
 interface Props {
     learningItem: {
@@ -140,9 +141,7 @@ export default function LearningItemsShow({ learningItem }: Props) {
                             )}
                         </CardHeader>
                         <CardContent>
-                            <div className="prose prose-stone dark:prose-invert max-w-none">
-                                <p className="whitespace-pre-wrap">{learningItem.description}</p>
-                            </div>
+                            <MarkdownContent content={learningItem.description} />
                         </CardContent>
                     </Card>
 
