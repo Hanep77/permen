@@ -35,7 +35,7 @@ export default function NotesIndex({ notes: notesData, filters }: { notes: Pagin
     const { values, set, update, submit } = useCrudFilters(notes.index().url, {
         search: filters.search || '',
         scope: filters.scope || 'independent',
-    });
+    }, 'permen:notes:filters');
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },

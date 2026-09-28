@@ -53,7 +53,7 @@ export default function OpportunitiesIndex({
         status: filters.status || '',
         priority: filters.priority || '',
         scope: filters.scope || 'independent',
-    });
+    }, 'permen:opportunities:filters');
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
@@ -86,14 +86,14 @@ export default function OpportunitiesIndex({
                             value: values.status,
                             onChange: (v) => update('status', v),
                             options: opportunityStatusOptions,
-                            placeholder: 'Filter by status',
+                            placeholder: 'Status',
                             widthClassName: 'w-[180px]',
                         },
                         {
                             value: values.priority,
                             onChange: (v) => update('priority', v),
                             options: priorityOptions,
-                            placeholder: 'Filter by priority',
+                            placeholder: 'Priority',
                             widthClassName: 'w-[160px]',
                         },
                         {

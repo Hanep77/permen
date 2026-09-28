@@ -36,7 +36,7 @@ export default function GoalsIndex({ goals: goalsData, filters }: { goals: Pagin
     const { values, set, update, submit } = useCrudFilters(goals.index().url, {
         search: filters.search || '',
         status: filters.status || '',
-    });
+    }, 'permen:goals:filters');
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
@@ -69,7 +69,7 @@ export default function GoalsIndex({ goals: goalsData, filters }: { goals: Pagin
                             value: values.status,
                             onChange: (v) => update('status', v),
                             options: statusOptions,
-                            placeholder: 'Filter by status',
+                            placeholder: 'Status',
                             widthClassName: 'w-[200px]',
                         },
                     ]}

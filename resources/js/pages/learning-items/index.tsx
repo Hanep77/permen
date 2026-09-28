@@ -56,7 +56,7 @@ export default function LearningItemsIndex({
     const { values, set, update, submit } = useCrudFilters(learningItems.index().url, {
         search: filters.search || '',
         type: filters.type || '',
-    });
+    }, 'permen:learning-items:filters');
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
@@ -89,7 +89,7 @@ export default function LearningItemsIndex({
                             value: values.type,
                             onChange: (v) => update('type', v),
                             options: resourceTypeOptions,
-                            placeholder: 'Filter by type',
+                            placeholder: 'Type',
                             widthClassName: 'w-[180px]',
                         },
                     ]}

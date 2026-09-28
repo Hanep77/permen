@@ -55,7 +55,7 @@ export default function ResourcesIndex({
         search: filters.search || '',
         type: filters.type || '',
         scope: filters.scope || 'independent',
-    });
+    }, 'permen:resources:filters');
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
@@ -88,7 +88,7 @@ export default function ResourcesIndex({
                             value: values.type,
                             onChange: (v) => update('type', v),
                             options: resourceTypeOptions,
-                            placeholder: 'Filter by type',
+                            placeholder: 'Type',
                             widthClassName: 'w-[180px]',
                         },
                         {

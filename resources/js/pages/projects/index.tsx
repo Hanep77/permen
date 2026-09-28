@@ -46,7 +46,7 @@ export default function ProjectsIndex({
     const { values, set, update, submit } = useCrudFilters(projects.index().url, {
         search: filters.search || '',
         status: filters.status || '',
-    });
+    }, 'permen:projects:filters');
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
@@ -79,7 +79,7 @@ export default function ProjectsIndex({
                             value: values.status,
                             onChange: (v) => update('status', v),
                             options: statusOptions,
-                            placeholder: 'Filter by status',
+                            placeholder: 'Status',
                             widthClassName: 'w-[180px]',
                         },
                     ]}

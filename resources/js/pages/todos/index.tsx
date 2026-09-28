@@ -31,7 +31,7 @@ export default function TodosIndex({ todos: todosData, filters }: { todos: Pagin
         status: filters.status || '',
         priority: filters.priority || '',
         scope: filters.scope || 'independent',
-    });
+    }, 'permen:todos:filters');
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: '/dashboard' },
@@ -64,14 +64,14 @@ export default function TodosIndex({ todos: todosData, filters }: { todos: Pagin
                             value: values.status,
                             onChange: (v) => update('status', v),
                             options: todoStatusOptions,
-                            placeholder: 'Filter by status',
+                            placeholder: 'Status',
                             widthClassName: 'w-[160px]',
                         },
                         {
                             value: values.priority,
                             onChange: (v) => update('priority', v),
                             options: priorityOptions,
-                            placeholder: 'Filter by priority',
+                            placeholder: 'Priority',
                             widthClassName: 'w-[160px]',
                         },
                         {
