@@ -34,12 +34,6 @@ export default function NotesCreate({ preset }: Props) {
           ? goals.show(presetGoal.id).url
           : notes.index().url;
 
-    const backLabel = presetProject
-        ? `Back to ${presetProject.title}`
-        : presetGoal
-          ? `Back to ${presetGoal.title}`
-          : 'Back to Notes';
-
     const { data, setData, post, processing, errors } = useForm({
         project_id: presetProject ? presetProject.id.toString() : '',
         goal_id: presetGoal ? presetGoal.id.toString() : '',
@@ -73,14 +67,7 @@ export default function NotesCreate({ preset }: Props) {
         <>
             <Head title="Create Note" />
             <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                    <Link
-                        href={backHref}
-                        className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                    >
-                        <ArrowLeft className="size-4" />
-                        {backLabel}
-                    </Link>
+                <div>
                     <div>
                         <h1 className="text-headline-small text-on-surface">Create Note</h1>
                         <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">

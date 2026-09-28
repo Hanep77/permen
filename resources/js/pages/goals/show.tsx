@@ -1,7 +1,7 @@
 "use client";
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Edit, Trash2, Calendar, Target, Clock, Plus } from 'lucide-react';
+import { Edit, Trash2, Calendar, Target, Clock, Plus } from 'lucide-react';
 import goals from '@/routes/goals'
 import projects from '@/routes/projects'
 import opportunities from '@/routes/opportunities'
@@ -92,20 +92,11 @@ export default function GoalsShow({ goal }: Props) {
             <Head title={goal.title} />
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Link
-                            href={goals.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                        >
-                            <ArrowLeft className="size-4" />
-                            Back to Goals
-                        </Link>
-                        <div>
-                            <h1 className="text-headline-small text-on-surface">{goal.title}</h1>
+                    <div>
+                        <h1 className="text-headline-small text-on-surface">{goal.title}</h1>
                             <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                                 Created by {goal.user.name} · {new Date(goal.created_at).toLocaleDateString()}
                             </p>
-                        </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <SectionVisibilityMenu

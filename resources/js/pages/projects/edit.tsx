@@ -70,14 +70,7 @@ export default function ProjectsEdit({ project, goals: goalsList }: Props) {
         <>
             <Head title={`Edit ${project.title}`} />
             <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                    <Link
-                        href={projects.show(project.id).url}
-                        className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                    >
-                        <ArrowLeft className="size-4" />
-                        Back to Project
-                    </Link>
+                <div>
                     <div>
                         <h1 className="text-headline-small text-on-surface">Edit Project</h1>
                         <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">

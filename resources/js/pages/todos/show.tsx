@@ -1,7 +1,7 @@
 "use client";
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Edit, Trash2, Calendar, Clock, Target, Flag, FileText } from 'lucide-react';
+import { Edit, Trash2, Calendar, Clock, Target, Flag, FileText } from 'lucide-react';
 import todos from '@/routes/todos'
 import projects from '@/routes/projects'
 import goals from '@/routes/goals';
@@ -82,53 +82,44 @@ export default function TodosShow({ todo }: Props) {
             <Head title={todo.title} />
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Link
-                            href={todos.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                        >
-                            <ArrowLeft className="size-4" />
-                            Back to Todos
-                        </Link>
-                        <div>
-                            <h1 className="text-headline-small text-on-surface">{todo.title}</h1>
-                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
-                                {(todo.project ? (
-                                    <>
-                                        <Link
-                                            href={projects.show(todo.project!.id).url}
-                                            className="text-primary hover:underline text-primary"
-                                        >
-                                            {todo.project!.title}
-                                        </Link>{' '}
-                                        ·
-                                    </>
-                                ) : null)}
-                                {(todo.goal ? (
-                                    <>
-                                        <Link
-                                            href={goals.show(todo.goal!.id).url}
-                                            className="text-secondary hover:underline text-secondary"
-                                        >
-                                            {todo.goal!.title}
-                                        </Link>{' '}
-                                        ·
-                                    </>
-                                ) : null)}
-                                {(todo.learning_item ? (
-                                    <>
-                                        <Link
-                                            href={learningItems.show(todo.learning_item!.id).url}
-                                            className="text-tertiary hover:underline text-tertiary"
-                                        >
-                                            {todo.learning_item!.title}
-                                        </Link>{' '}
-                                        ·
-                                    </>
-                                ) : null)}
-                                Created by {todo.user.name} · {new Date(todo.created_at).toLocaleDateString()}
-                            </p>
-                        </div>
+                    <div>
+                        <h1 className="text-headline-small text-on-surface">{todo.title}</h1>
+                        <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
+                            {(todo.project ? (
+                                <>
+                                    <Link
+                                        href={projects.show(todo.project!.id).url}
+                                        className="text-primary hover:underline text-primary"
+                                    >
+                                        {todo.project!.title}
+                                    </Link>{' '}
+                                    ·
+                                </>
+                            ) : null)}
+                            {(todo.goal ? (
+                                <>
+                                    <Link
+                                        href={goals.show(todo.goal!.id).url}
+                                        className="text-secondary hover:underline text-secondary"
+                                    >
+                                        {todo.goal!.title}
+                                    </Link>{' '}
+                                    ·
+                                </>
+                            ) : null)}
+                            {(todo.learning_item ? (
+                                <>
+                                    <Link
+                                        href={learningItems.show(todo.learning_item!.id).url}
+                                        className="text-tertiary hover:underline text-tertiary"
+                                    >
+                                        {todo.learning_item!.title}
+                                    </Link>{' '}
+                                    ·
+                                </>
+                            ) : null)}
+                            Created by {todo.user.name} · {new Date(todo.created_at).toLocaleDateString()}
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button

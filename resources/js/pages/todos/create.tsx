@@ -40,14 +40,6 @@ export default function TodosCreate({ preset }: Props) {
             ? learningItems.show(presetLearningItem.id).url
             : todos.index().url;
 
-    const backLabel = presetProject
-        ? `Back to ${presetProject.title}`
-        : presetGoal
-          ? `Back to ${presetGoal.title}`
-          : presetLearningItem
-            ? `Back to ${presetLearningItem.title}`
-            : 'Back to Todos';
-
     const { data, setData, post, processing, errors } = useForm({
         project_id: presetProject ? presetProject.id.toString() : '',
         goal_id: presetGoal ? presetGoal.id.toString() : '',
@@ -100,14 +92,7 @@ export default function TodosCreate({ preset }: Props) {
         <>
             <Head title="Create Todo" />
             <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                    <Link
-                        href={backHref}
-                        className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                    >
-                        <ArrowLeft className="size-4" />
-                        {backLabel}
-                    </Link>
+                <div>
                     <div>
                         <h1 className="text-headline-small text-on-surface">Create Todo</h1>
                         <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">

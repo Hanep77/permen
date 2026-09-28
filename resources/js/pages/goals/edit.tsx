@@ -61,14 +61,7 @@ export default function GoalsEdit({ goal }: Props) {
         <>
             <Head title={`Edit ${goal.title}`} />
             <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                    <Link
-                        href={goals.show(goal.id).url}
-                        className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                    >
-                        <ArrowLeft className="size-4" />
-                        Back to Goal
-                    </Link>
+                <div>
                     <div>
                         <h1 className="text-headline-small text-on-surface">Edit Goal</h1>
                         <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">

@@ -27,7 +27,6 @@ export default function LearningItemsCreate({ preset }: Props) {
     const context = presetGoal ? 'goal' : 'independent';
 
     const backHref = presetGoal ? goals.show(presetGoal.id).url : learningItems.index().url;
-    const backLabel = presetGoal ? `Back to ${presetGoal.title}` : 'Back to Learning Items';
 
     const { data, setData, post, processing, errors } = useForm({
         goal_id: presetGoal ? presetGoal.id.toString() : '',
@@ -74,14 +73,7 @@ export default function LearningItemsCreate({ preset }: Props) {
         <>
             <Head title="Create Learning Item" />
             <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                    <Link
-                        href={backHref}
-                        className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                    >
-                        <ArrowLeft className="size-4" />
-                        {backLabel}
-                    </Link>
+                <div>
                     <div>
                         <h1 className="text-headline-small text-on-surface">Create Learning Item</h1>
                         <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">

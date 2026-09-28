@@ -1,7 +1,7 @@
 "use client";
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Edit, Trash2, Calendar, Clock, Target, DollarSign, Flag, FileText } from 'lucide-react';
+import { Edit, Trash2, Calendar, Clock, Target, DollarSign, Flag, FileText } from 'lucide-react';
 import opportunities from '@/routes/opportunities'
 import goals from '@/routes/goals';
 import { Button } from '@/components/ui/button';
@@ -78,31 +78,22 @@ export default function OpportunitiesShow({ opportunity }: Props) {
             <Head title={opportunity.title} />
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Link
-                            href={opportunities.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                        >
-                            <ArrowLeft className="size-4" />
-                            Back to Opportunities
-                        </Link>
-                        <div>
-                            <h1 className="text-headline-small text-on-surface">{opportunity.title}</h1>
-                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
-                                {opportunity.goal ? (
-                                    <>
-                                        <Link
-                                            href={goals.show(opportunity.goal!.id).url}
-                                            className="text-primary hover:underline text-primary"
-                                        >
-                                            {opportunity.goal!.title}
-                                        </Link>{' '}
-                                        ·
-                                    </>
-                                ) : null}
-                                Created by {opportunity.user.name} · {new Date(opportunity.created_at).toLocaleDateString()}
-                            </p>
-                        </div>
+                    <div>
+                        <h1 className="text-headline-small text-on-surface">{opportunity.title}</h1>
+                        <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
+                            {opportunity.goal ? (
+                                <>
+                                    <Link
+                                        href={goals.show(opportunity.goal!.id).url}
+                                        className="text-primary hover:underline text-primary"
+                                    >
+                                        {opportunity.goal!.title}
+                                    </Link>{' '}
+                                    ·
+                                </>
+                            ) : null}
+                            Created by {opportunity.user.name} · {new Date(opportunity.created_at).toLocaleDateString()}
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button

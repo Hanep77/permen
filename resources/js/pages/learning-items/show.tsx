@@ -1,7 +1,7 @@
 "use client";
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Edit, Trash2, Calendar, BookOpen, GraduationCap, Play, FileText, Book, CheckCircle2, Plus } from 'lucide-react';
+import { Edit, Trash2, Calendar, BookOpen, GraduationCap, Play, FileText, Book, CheckCircle2, Plus } from 'lucide-react';
 import learningItems from '@/routes/learning-items';
 import goals from '@/routes/goals';
 import resources from '@/routes/resources';
@@ -82,31 +82,22 @@ export default function LearningItemsShow({ learningItem }: Props) {
             <Head title={learningItem.title} />
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Link
-                            href={learningItems.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                        >
-                            <ArrowLeft className="size-4" />
-                            Back to Learning Items
-                        </Link>
-                        <div>
-                            <h1 className="text-headline-small text-on-surface">{learningItem.title}</h1>
-                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
-                                {learningItem.goal ? (
-                                    <>
-                                        <Link
-                                            href={goals.show(learningItem.goal.id).url}
-                                            className="text-primary hover:underline text-primary"
-                                        >
-                                            {learningItem.goal.title}
-                                        </Link>{' '}
-                                        ·
-                                    </>
-                                ) : null}
-                                Created by {learningItem.user.name} · {new Date(learningItem.created_at).toLocaleDateString()}
-                            </p>
-                        </div>
+                    <div>
+                        <h1 className="text-headline-small text-on-surface">{learningItem.title}</h1>
+                        <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
+                            {learningItem.goal ? (
+                                <>
+                                    <Link
+                                        href={goals.show(learningItem.goal.id).url}
+                                        className="text-primary hover:underline text-primary"
+                                    >
+                                        {learningItem.goal.title}
+                                    </Link>{' '}
+                                    ·
+                                </>
+                            ) : null}
+                            Created by {learningItem.user.name} · {new Date(learningItem.created_at).toLocaleDateString()}
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button

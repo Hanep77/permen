@@ -88,14 +88,7 @@ export default function ResourcesEdit({ resource, projects: projectsList, goals:
         <>
             <Head title={`Edit ${resource.title}`} />
             <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                    <Link
-                        href={resources.show(resource.id).url}
-                        className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                    >
-                        <ArrowLeft className="size-4" />
-                        Back to Resource
-                    </Link>
+                <div>
                     <div>
                         <h1 className="text-headline-small text-on-surface">Edit Resource</h1>
                         <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">

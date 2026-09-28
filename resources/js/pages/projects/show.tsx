@@ -1,7 +1,7 @@
 "use client";
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Edit, Trash2, Calendar, Target, Clock, Plus } from 'lucide-react';
+import { Edit, Trash2, Calendar, Target, Clock, Plus } from 'lucide-react';
 import projects from '@/routes/projects'
 import notes from '@/routes/notes'
 import resources from '@/routes/resources'
@@ -72,16 +72,8 @@ export default function ProjectsShow({ project }: Props) {
             <Head title={project.title} />
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Link
-                            href={projects.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                        >
-                            <ArrowLeft className="size-4" />
-                            Back to Projects
-                        </Link>
-                        <div>
-                            <h1 className="text-headline-small text-on-surface">{project.title}</h1>
+                    <div>
+                        <h1 className="text-headline-small text-on-surface">{project.title}</h1>
                             <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
                                 {project.goal ? (
                                     <>
@@ -96,7 +88,6 @@ export default function ProjectsShow({ project }: Props) {
                                 ) : null}
                                 Created by {project.user.name} · {new Date(project.created_at).toLocaleDateString()}
                             </p>
-                        </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button

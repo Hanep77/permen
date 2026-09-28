@@ -1,7 +1,7 @@
 "use client";
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Edit, Trash2, Calendar, Clock, FileText } from 'lucide-react';
+import { Edit, Trash2, Calendar, Clock, FileText } from 'lucide-react';
 import notes from '@/routes/notes'
 import projects from '@/routes/projects'
 import goals from '@/routes/goals';
@@ -55,42 +55,33 @@ export default function NotesShow({ note }: Props) {
             <Head title={note.title} />
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Link
-                            href={notes.index().url}
-                            className="inline-flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface text-on-surface-variant hover:text-on-surface"
-                        >
-                            <ArrowLeft className="size-4" />
-                            Back to Notes
-                        </Link>
-                        <div>
-                            <h1 className="text-headline-small text-on-surface">{note.title}</h1>
-                            <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
-                                {(note.project ? (
-                                    <>
-                                        <Link
-                                            href={projects.show(note.project!.id).url}
-                                            className="text-primary hover:underline text-primary"
-                                        >
-                                            {note.project!.title}
-                                        </Link>{' '}
-                                        ·
-                                    </>
-                                ) : null)}
-                                {(note.goal ? (
-                                    <>
-                                        <Link
-                                            href={goals.show(note.goal!.id).url}
-                                            className="text-secondary hover:underline text-secondary"
-                                        >
-                                            {note.goal!.title}
-                                        </Link>{' '}
-                                        ·
-                                    </>
-                                ) : null)}
-                                Created by {note.user.name} · {new Date(note.created_at).toLocaleDateString()}
-                            </p>
-                        </div>
+                    <div>
+                        <h1 className="text-headline-small text-on-surface">{note.title}</h1>
+                        <p className="mt-1 text-sm text-on-surface-variant text-on-surface-variant">
+                            {(note.project ? (
+                                <>
+                                    <Link
+                                        href={projects.show(note.project!.id).url}
+                                        className="text-primary hover:underline text-primary"
+                                    >
+                                        {note.project!.title}
+                                    </Link>{' '}
+                                    ·
+                                </>
+                            ) : null)}
+                            {(note.goal ? (
+                                <>
+                                    <Link
+                                        href={goals.show(note.goal!.id).url}
+                                        className="text-secondary hover:underline text-secondary"
+                                    >
+                                        {note.goal!.title}
+                                    </Link>{' '}
+                                    ·
+                                </>
+                            ) : null)}
+                            Created by {note.user.name} · {new Date(note.created_at).toLocaleDateString()}
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button
