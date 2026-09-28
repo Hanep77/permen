@@ -1,6 +1,6 @@
 "use client";
 
-import { Filter, Search } from 'lucide-react';
+import { ChevronDown, Filter, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
@@ -50,10 +50,11 @@ export function CrudFilterBar({
                         options={field.options}
                         placeholder={field.placeholder}
                         className={cn(
-                            'h-14 rounded-full border-outline-variant pr-4 pl-12',
-                            field.widthClassName ?? 'w-full sm:w-[200px]',
+                            'h-14 appearance-none rounded-full border-outline-variant pr-12 pl-12',
+                            field.widthClassName ?? 'w-full sm:w-50',
                         )}
                     />
+                    <ChevronDown className="pointer-events-none absolute top-1/2 right-4 size-5 -translate-y-1/2 text-on-surface-variant" />
                 </div>
             ))}
         </form>
