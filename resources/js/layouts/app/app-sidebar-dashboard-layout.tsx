@@ -57,7 +57,7 @@ const navigation: Navigation = [
         section_title: 'Development',
         items: [
             { title: 'Goals', href: goals.index(), icon: Target },
-            { title: 'Habbits', href: '#', icon: Repeat2 },
+            { title: 'Habits', href: '#', icon: Repeat2 },
             { title: 'Learning Items', href: learningItems.index(), icon: BookOpen },
             { title: 'Question Banks', href: '#', icon: FileQuestion },
         ],
@@ -96,9 +96,8 @@ export default function AppSidebarDashboardLayout({
         <div className="min-h-screen bg-surface text-on-surface">
             {/* M3 modal + standard navigation drawer */}
             <aside
-                className={`fixed inset-y-0 left-0 z-50 flex flex-col rounded-r-lg bg-surface-container-low transition-all duration-300 ease-in-out ${
-                    isSidebarCollapsed ? 'w-20' : 'w-80'
-                } ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
+                className={`fixed inset-y-0 left-0 z-50 flex flex-col rounded-r-lg bg-surface-container-low transition-all duration-300 ease-in-out ${isSidebarCollapsed ? 'w-20' : 'w-80'
+                    } ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
                 aria-label="Sidebar"
             >
                 <div className="flex h-16 items-center justify-between px-4">
@@ -138,17 +137,15 @@ export default function AppSidebarDashboardLayout({
                                     <Link
                                         key={item.title}
                                         href={item.href}
-                                        className={`flex h-14 items-center gap-3 rounded-full px-4 text-label-large transition-colors ${
-                                            isSidebarCollapsed
-                                                ? 'justify-center'
-                                                : 'justify-start'
-                                        } ${
-                                            isActive
+                                        className={`flex h-14 items-center gap-3 rounded-full px-4 text-label-large transition-colors ${isSidebarCollapsed
+                                            ? 'justify-center'
+                                            : 'justify-start'
+                                            } ${isActive
                                                 ? 'bg-secondary-container text-on-secondary-container'
                                                 : isDisabled
-                                                  ? 'cursor-default text-on-surface/40'
-                                                  : 'text-on-surface-variant hover:bg-on-surface/8'
-                                        }`}
+                                                    ? 'cursor-default text-on-surface/40'
+                                                    : 'text-on-surface-variant hover:bg-on-surface/8'
+                                            }`}
                                         title={
                                             isSidebarCollapsed ? item.title : undefined
                                         }
@@ -174,9 +171,8 @@ export default function AppSidebarDashboardLayout({
                         href={logout()}
                         method="post"
                         as="button"
-                        className={`flex h-14 w-full items-center gap-3 rounded-full px-4 text-label-large text-on-surface-variant transition-colors hover:bg-on-surface/8 ${
-                            isSidebarCollapsed ? 'justify-center' : 'justify-start'
-                        }`}
+                        className={`flex h-14 w-full items-center gap-3 rounded-full px-4 text-label-large text-on-surface-variant transition-colors hover:bg-on-surface/8 ${isSidebarCollapsed ? 'justify-center' : 'justify-start'
+                            }`}
                         title={isSidebarCollapsed ? 'Log out' : undefined}
                     >
                         <LogOut className="size-6 shrink-0" aria-hidden="true" />
@@ -186,9 +182,8 @@ export default function AppSidebarDashboardLayout({
             </aside>
 
             <div
-                className={`transition-all duration-300 ease-in-out ${
-                    isSidebarOpen || isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-80'
-                }`}
+                className={`transition-all duration-300 ease-in-out ${isSidebarOpen || isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-80'
+                    }`}
             >
                 {/* M3 small top app bar */}
                 <header className="sticky top-0 z-40 flex h-16 items-center gap-2 bg-surface-container px-4 text-on-surface lg:px-6">
@@ -205,7 +200,7 @@ export default function AppSidebarDashboardLayout({
                         onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                         aria-label="Toggle sidebar"
                     >
-                        <PanelLeft className="size-6" />
+                        <PanelLeft className="size-5" />
                     </button>
 
                     <div className="flex-1" />
