@@ -6,7 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Permen';
 
 function FlashToasts() {
     useFlashToast();
@@ -15,7 +15,7 @@ function FlashToasts() {
 }
 
 void createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    title: (title) => (title),
     layout: (name) => {
         switch (true) {
             case name === 'welcome':
@@ -44,3 +44,13 @@ void createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+    window.addEventListener('load', () => {
+        void navigator.serviceWorker
+            .register('/sw.js', { scope: '/' })
+            .catch(() => {
+                // Service worker registration is best-effort.
+            });
+    });
+}

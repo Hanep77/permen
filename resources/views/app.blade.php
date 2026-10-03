@@ -31,8 +31,17 @@
         </style>
 
         <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+        <link rel="manifest" href="/manifest.webmanifest">
+        <meta name="application-name" content="{{ config('app.name', 'Laravel') }}">
+        <meta name="apple-mobile-web-app-title" content="{{ config('app.name', 'Laravel') }}">
+        <meta name="description" content="{{ config('app.name', 'Laravel') }}">
+        <meta name="theme-color" content="#006a60">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
         @fonts
 
