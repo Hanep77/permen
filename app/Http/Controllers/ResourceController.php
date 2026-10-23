@@ -74,7 +74,7 @@ class ResourceController extends Controller
         ]);
 
         $parentTargets = [
-            'project' => $resource->project_id ? ['projects.show', $resource->project_id] : null,
+            'project' => $resource->project_id ? ['projects.resources', $resource->project_id] : null,
             'goal' => $resource->goal_id ? ['goals.show', $resource->goal_id] : null,
             'learning_item' => $resource->learning_item_id ? ['learning-items.show', $resource->learning_item_id] : null,
         ];

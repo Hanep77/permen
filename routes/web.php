@@ -16,6 +16,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('goals', GoalController::class);
     Route::resource('projects', ProjectController::class);
+    Route::get('projects/{project}/notes', [ProjectController::class, 'notes'])->name('projects.notes');
+    Route::get('projects/{project}/resources', [ProjectController::class, 'resources'])->name('projects.resources');
+    Route::get('projects/{project}/todos', [ProjectController::class, 'todos'])->name('projects.todos');
     Route::resource('opportunities', OpportunityController::class);
     Route::resource('todos', TodoController::class);
     Route::resource('notes', NoteController::class);

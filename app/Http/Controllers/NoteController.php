@@ -67,7 +67,7 @@ class NoteController extends Controller
         ]);
 
         $parentTargets = [
-            'project' => $note->project_id ? ['projects.show', $note->project_id] : null,
+            'project' => $note->project_id ? ['projects.notes', $note->project_id] : null,
             'goal' => $note->goal_id ? ['goals.show', $note->goal_id] : null,
         ];
 

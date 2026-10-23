@@ -156,7 +156,7 @@ test('storing a todo in project context links it and redirects to the project', 
         'context' => 'project',
     ]);
 
-    $response->assertRedirect(route('projects.show', $project));
+    $response->assertRedirect(route('projects.todos', $project));
     $this->assertDatabaseHas('todos', [
         'user_id' => $user->id,
         'title' => 'Test Todo',
@@ -294,7 +294,7 @@ test('storing a todo in project context keeps an additional goal link', function
         'context' => 'project',
     ]);
 
-    $response->assertRedirect(route('projects.show', $project));
+    $response->assertRedirect(route('projects.todos', $project));
     $this->assertDatabaseHas('todos', [
         'user_id' => $user->id,
         'title' => 'Test Todo',
@@ -542,4 +542,82 @@ test('resource create presets an owned learning item and ignores a foreign one',
     $this->get(route('resources.create', ['learning_item_id' => $foreignItem->id]))
         ->assertInertia(fn (Assert $page) => $page
             ->where('preset.learningItem', null));
+});
+
+test('project overview exposes child module counts', function () {
+    $user = createUser();
+    $project = createProject($user);
+    $this->actingAs($user);
+
+    Note::create(['user_id' => $user->id, 'title' => 'Project note', 'content' => 'Body', 'project_id' => $project->id]);
+    Resource::create(['user_id' => $user->id, 'title' => 'Project resource', 'description' => 'Desc', 'url' => 'https://example.com', 'type' => 'article', 'project_id' => $project->id]);
+    Todo::create([...todoPayload(['user_id' => $user->id, 'title' => 'Project todo', 'project_id' => $project->id])]);
+
+    $this->get(route('projects.show', $project))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('projects/show')
+            ->where('project.notes_count', 1)
+            ->where('project.resources_count', 1)
+            ->where('project.todos_count', 1));
+});
+
+test('project notes tab only lists notes for the project', function () {
+    $user = createUser();
+    $project = createProject($user);
+    $otherProject = createProject($user);
+    $this->actingAs($user);
+
+    Note::create(['user_id' => $user->id, 'title' => 'In project', 'content' => 'Body', 'project_id' => $project->id]);
+    Note::create(['user_id' => $user->id, 'title' => 'Other project', 'content' => 'Body', 'project_id' => $otherProject->id]);
+    Note::create(['user_id' => $user->id, 'title' => 'Independent', 'content' => 'Body']);
+
+    $this->get(route('projects.notes', $project))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('projects/notes')
+            ->has('notes.data', 1)
+            ->where('notes.data.0.title', 'In project'));
+});
+
+test('project resources tab only lists resources for the project', function () {
+    $user = createUser();
+    $project = createProject($user);
+    $otherProject = createProject($user);
+    $this->actingAs($user);
+
+    Resource::create(['user_id' => $user->id, 'title' => 'In project', 'description' => 'Desc', 'url' => 'https://example.com', 'type' => 'article', 'project_id' => $project->id]);
+    Resource::create(['user_id' => $user->id, 'title' => 'Other project', 'description' => 'Desc', 'url' => 'https://example.com', 'type' => 'article', 'project_id' => $otherProject->id]);
+
+    $this->get(route('projects.resources', $project))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('projects/resources')
+            ->has('resources.data', 1)
+            ->where('resources.data.0.title', 'In project'));
+});
+
+test('project todos tab only lists todos for the project', function () {
+    $user = createUser();
+    $project = createProject($user);
+    $otherProject = createProject($user);
+    $this->actingAs($user);
+
+    Todo::create([...todoPayload(['user_id' => $user->id, 'title' => 'In project', 'project_id' => $project->id])]);
+    Todo::create([...todoPayload(['user_id' => $user->id, 'title' => 'Other project', 'project_id' => $otherProject->id])]);
+    Todo::create([...todoPayload(['user_id' => $user->id, 'title' => 'Independent'])]);
+
+    $this->get(route('projects.todos', $project))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('projects/todos')
+            ->has('todos.data', 1)
+            ->where('todos.data.0.title', 'In project'));
+});
+
+test('project module tabs are forbidden for other users', function () {
+    $owner = createUser();
+    $otherUser = createUser();
+    $project = createProject($owner);
+    $this->actingAs($otherUser);
+
+    $this->get(route('projects.notes', $project))->assertForbidden();
+    $this->get(route('projects.resources', $project))->assertForbidden();
+    $this->get(route('projects.todos', $project))->assertForbidden();
 });

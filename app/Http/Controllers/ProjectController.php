@@ -53,10 +53,41 @@ class ProjectController extends Controller
     {
         $this->authorize('view', $project);
 
-        $project->load(['goal', 'notes', 'resources', 'todos', 'user']);
-
         return Inertia::render('projects/show', [
-            'project' => $project,
+            'project' => $this->projectWithCounts($project),
+        ]);
+    }
+
+    public function notes(Project $project): Response
+    {
+        $this->authorize('view', $project);
+
+        return Inertia::render('projects/notes', [
+            'project' => $this->projectWithCounts($project),
+            'notes' => $project->notes()->latest()->paginate(10),
+        ]);
+    }
+
+    public function resources(Project $project): Response
+    {
+        $this->authorize('view', $project);
+
+        return Inertia::render('projects/resources', [
+            'project' => $this->projectWithCounts($project),
+            'resources' => $project->resources()->latest()->paginate(10),
+        ]);
+    }
+
+    public function todos(Project $project): Response
+    {
+        $this->authorize('view', $project);
+
+        return Inertia::render('projects/todos', [
+            'project' => $this->projectWithCounts($project),
+            'todos' => $project->todos()
+                ->with(['project', 'goal', 'learningItem'])
+                ->latest()
+                ->paginate(10),
         ]);
     }
 
@@ -91,5 +122,11 @@ class ProjectController extends Controller
 
         return redirect()->route('projects.index')
             ->with('success', 'Project deleted successfully.');
+    }
+
+    private function projectWithCounts(Project $project): Project
+    {
+        return $project->load(['goal', 'user'])
+            ->loadCount(['notes', 'resources', 'todos']);
     }
 }

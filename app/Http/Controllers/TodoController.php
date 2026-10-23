@@ -75,7 +75,7 @@ class TodoController extends Controller
         ]);
 
         $parentTargets = [
-            'project' => $todo->project_id ? ['projects.show', $todo->project_id] : null,
+            'project' => $todo->project_id ? ['projects.todos', $todo->project_id] : null,
             'goal' => $todo->goal_id ? ['goals.show', $todo->goal_id] : null,
             'learning_item' => $todo->learning_item_id ? ['learning-items.show', $todo->learning_item_id] : null,
         ];
