@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
+import { Link, router, usePage } from '@inertiajs/react';
 import {
+    ArrowLeft,
     LayoutDashboard,
     Settings,
     LogOut,
@@ -35,6 +36,20 @@ import resources from '@/routes/resources';
 import learningItems from '@/routes/learning-items';
 import type { AppLayoutProps, Navigation } from '@/types';
 import { extractHref } from '@/types/navigation';
+
+function isItemActive(itemHref: string, currentUrl: string): boolean {
+    if (itemHref === '#') {
+        return false;
+    }
+
+    const normalize = (path: string) =>
+        path.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
+
+    const itemPath = normalize(itemHref);
+    const currentPath = normalize(currentUrl);
+
+    return currentPath === itemPath || currentPath.startsWith(`${itemPath}/`);
+}
 
 const navigation: Navigation = [
     {
@@ -90,7 +105,47 @@ export default function AppSidebarDashboardLayout({
 }: AppLayoutProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const shouldBlurAfterBack = useRef(false);
     const page = usePage();
+
+    const goBack = () => {
+        shouldBlurAfterBack.current = true;
+        window.history.back();
+    };
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key !== 'Escape' || event.defaultPrevented) {
+                return;
+            }
+
+            const target = event.target as HTMLElement | null;
+            if (target?.closest('input, textarea, select, [contenteditable="true"]')) {
+                return;
+            }
+
+            goBack();
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    useEffect(() => {
+        return router.on('navigate', () => {
+            if (!shouldBlurAfterBack.current) {
+                return;
+            }
+
+            shouldBlurAfterBack.current = false;
+            requestAnimationFrame(() => {
+                if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur();
+                }
+            });
+        });
+    }, []);
 
     return (
         <div className="min-h-screen bg-surface text-on-surface">
@@ -130,8 +185,7 @@ export default function AppSidebarDashboardLayout({
                             )}
                             {section.items.map((item) => {
                                 const itemHref = extractHref(item.href);
-                                const isActive =
-                                    itemHref === page.url && itemHref !== '#';
+                                const isActive = isItemActive(itemHref, page.url);
                                 const isDisabled = item.href == '#';
                                 return (
                                     <Link
@@ -201,6 +255,14 @@ export default function AppSidebarDashboardLayout({
                         aria-label="Toggle sidebar"
                     >
                         <PanelLeft className="size-5" />
+                    </button>
+
+                    <button
+                        className="rounded-full p-2 text-on-surface-variant transition hover:bg-on-surface/8"
+                        onClick={goBack}
+                        aria-label="Go back"
+                    >
+                        <ArrowLeft className="size-5" />
                     </button>
 
                     <div className="flex-1" />
