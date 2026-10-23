@@ -64,7 +64,7 @@ class OpportunityController extends Controller
         ]);
 
         if ($opportunity->goal_id) {
-            return redirect()->route('goals.show', $opportunity->goal_id)
+            return redirect()->route('goals.opportunities', $opportunity->goal_id)
                 ->with('success', 'Opportunity created successfully.');
         }
 

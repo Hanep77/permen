@@ -57,7 +57,7 @@ class LearningItemController extends Controller
         ]);
 
         if ($context === 'goal' && $learningItem->goal_id) {
-            return redirect()->route('goals.show', $learningItem->goal_id)
+            return redirect()->route('goals.learning-items', $learningItem->goal_id)
                 ->with('success', 'Learning item created successfully.');
         }
 
@@ -69,10 +69,31 @@ class LearningItemController extends Controller
     {
         $this->authorize('view', $learningItem);
 
-        $learningItem->load(['user', 'goal', 'todos', 'resources']);
-
         return Inertia::render('learning-items/show', [
-            'learningItem' => $learningItem,
+            'learningItem' => $this->learningItemWithCounts($learningItem),
+        ]);
+    }
+
+    public function todos(LearningItem $learningItem): Response
+    {
+        $this->authorize('view', $learningItem);
+
+        return Inertia::render('learning-items/todos', [
+            'learningItem' => $this->learningItemWithCounts($learningItem),
+            'todos' => $learningItem->todos()
+                ->with(['project', 'goal', 'learningItem'])
+                ->latest()
+                ->paginate(10),
+        ]);
+    }
+
+    public function resources(LearningItem $learningItem): Response
+    {
+        $this->authorize('view', $learningItem);
+
+        return Inertia::render('learning-items/resources', [
+            'learningItem' => $this->learningItemWithCounts($learningItem),
+            'resources' => $learningItem->resources()->latest()->paginate(10),
         ]);
     }
 
@@ -107,5 +128,11 @@ class LearningItemController extends Controller
 
         return redirect()->route('learning-items.index')
             ->with('success', 'Learning item deleted successfully.');
+    }
+
+    private function learningItemWithCounts(LearningItem $learningItem): LearningItem
+    {
+        return $learningItem->load(['user', 'goal'])
+            ->loadCount(['todos', 'resources']);
     }
 }

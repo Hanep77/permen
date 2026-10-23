@@ -68,7 +68,7 @@ class NoteController extends Controller
 
         $parentTargets = [
             'project' => $note->project_id ? ['projects.notes', $note->project_id] : null,
-            'goal' => $note->goal_id ? ['goals.show', $note->goal_id] : null,
+            'goal' => $note->goal_id ? ['goals.notes', $note->goal_id] : null,
         ];
 
         foreach (array_unique([$context, 'project', 'goal']) as $key) {

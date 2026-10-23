@@ -214,7 +214,7 @@ test('storing an opportunity in goal context links it and redirects to the goal'
         'context' => 'goal',
     ]);
 
-    $response->assertRedirect(route('goals.show', $goal));
+    $response->assertRedirect(route('goals.opportunities', $goal));
     $this->assertDatabaseHas('opportunities', [
         'user_id' => $user->id,
         'title' => 'Test Opp',
@@ -273,7 +273,7 @@ test('storing a todo in learning item context links it and redirects to the lear
         'context' => 'learning_item',
     ]);
 
-    $response->assertRedirect(route('learning-items.show', $learningItem));
+    $response->assertRedirect(route('learning-items.todos', $learningItem));
     $this->assertDatabaseHas('todos', [
         'user_id' => $user->id,
         'title' => 'Test Todo',
@@ -319,18 +319,18 @@ test('storing a todo with another users learning item id fails validation', func
     $this->assertDatabaseCount('todos', 0);
 });
 
-test('learning item show page lists its todos', function () {
+test('learning item todos tab lists its todos', function () {
     $user = createUser();
     $learningItem = createLearningItem($user);
     $this->actingAs($user);
 
     Todo::create([...todoPayload(['user_id' => $user->id, 'title' => 'Step one', 'learning_item_id' => $learningItem->id])]);
 
-    $this->get(route('learning-items.show', $learningItem))
+    $this->get(route('learning-items.todos', $learningItem))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('learning-items/show')
-            ->has('learningItem.todos', 1)
-            ->where('learningItem.todos.0.title', 'Step one'));
+            ->component('learning-items/todos')
+            ->has('todos.data', 1)
+            ->where('todos.data.0.title', 'Step one'));
 });
 
 function learningItemPayload(array $overrides = []): array
@@ -366,7 +366,7 @@ test('storing a learning item in goal context links it and redirects to the goal
         'context' => 'goal',
     ]);
 
-    $response->assertRedirect(route('goals.show', $goal));
+    $response->assertRedirect(route('goals.learning-items', $goal));
     $this->assertDatabaseHas('learning_items', [
         'user_id' => $user->id,
         'title' => 'Test Learning Item',
@@ -417,7 +417,7 @@ test('storing a resource in learning item context links it and redirects to the 
         'context' => 'learning_item',
     ]);
 
-    $response->assertRedirect(route('learning-items.show', $learningItem));
+    $response->assertRedirect(route('learning-items.resources', $learningItem));
     $this->assertDatabaseHas('resources', [
         'user_id' => $user->id,
         'title' => 'Test Resource',
@@ -477,18 +477,18 @@ test('resource index excludes learning item resources by default but includes th
             ->has('resources.data', 2));
 });
 
-test('goal show page lists its learning items', function () {
+test('goal learning items tab lists its learning items', function () {
     $user = createUser();
     $goal = createGoal($user);
     $this->actingAs($user);
 
     LearningItem::create([...learningItemPayload(['user_id' => $user->id, 'title' => 'Goal learning', 'goal_id' => $goal->id])]);
 
-    $this->get(route('goals.show', $goal))
+    $this->get(route('goals.learning-items', $goal))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('goals/show')
-            ->has('goal.learning_items', 1)
-            ->where('goal.learning_items.0.title', 'Goal learning'));
+            ->component('goals/learning-items')
+            ->has('learningItems.data', 1)
+            ->where('learningItems.data.0.title', 'Goal learning'));
 });
 
 test('learning item show page lists its resources and goal', function () {
@@ -500,12 +500,12 @@ test('learning item show page lists its resources and goal', function () {
 
     Resource::create([...resourcePayload(['user_id' => $user->id, 'title' => 'Linked resource', 'learning_item_id' => $learningItem->id])]);
 
-    $this->get(route('learning-items.show', $learningItem))
+    $this->get(route('learning-items.resources', $learningItem))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('learning-items/show')
+            ->component('learning-items/resources')
             ->where('learningItem.goal.id', $goal->id)
-            ->has('learningItem.resources', 1)
-            ->where('learningItem.resources.0.title', 'Linked resource'));
+            ->has('resources.data', 1)
+            ->where('resources.data.0.title', 'Linked resource'));
 });
 
 test('learning item create presets an owned goal and ignores a foreign one', function () {
@@ -620,4 +620,189 @@ test('project module tabs are forbidden for other users', function () {
     $this->get(route('projects.notes', $project))->assertForbidden();
     $this->get(route('projects.resources', $project))->assertForbidden();
     $this->get(route('projects.todos', $project))->assertForbidden();
+});
+
+test('goal overview exposes child module counts', function () {
+    $user = createUser();
+    $goal = createGoal($user);
+    $this->actingAs($user);
+
+    Project::create([
+        'user_id' => $user->id,
+        'goal_id' => $goal->id,
+        'title' => 'Goal project',
+        'description' => 'Project description',
+        'status' => 'active',
+        'start_date' => now()->toDateString(),
+        'target_date' => now()->addMonth()->toDateString(),
+    ]);
+    Opportunity::create(['user_id' => $user->id, 'goal_id' => $goal->id, 'title' => 'Goal opp', 'description' => 'Desc', 'status' => 'new', 'source' => 'web', 'priority' => 'medium', 'estimated_value' => 'medium', 'next_action' => 'Call', 'due_date' => now()->addWeek()->toDateString()]);
+    Note::create(['user_id' => $user->id, 'title' => 'Goal note', 'content' => 'Body', 'goal_id' => $goal->id]);
+    Resource::create(['user_id' => $user->id, 'title' => 'Goal resource', 'description' => 'Desc', 'url' => 'https://example.com', 'type' => 'article', 'goal_id' => $goal->id]);
+    Todo::create([...todoPayload(['user_id' => $user->id, 'title' => 'Goal todo', 'goal_id' => $goal->id])]);
+    LearningItem::create([...learningItemPayload(['user_id' => $user->id, 'title' => 'Goal learning', 'goal_id' => $goal->id])]);
+
+    $this->get(route('goals.show', $goal))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('goals/show')
+            ->where('goal.projects_count', 1)
+            ->where('goal.opportunities_count', 1)
+            ->where('goal.notes_count', 1)
+            ->where('goal.resources_count', 1)
+            ->where('goal.todos_count', 1)
+            ->where('goal.learning_items_count', 1));
+});
+
+test('goal module tabs only list items for the goal', function () {
+    $user = createUser();
+    $goal = createGoal($user);
+    $otherGoal = createGoal($user);
+    $this->actingAs($user);
+
+    foreach ([$goal, $otherGoal] as $index => $target) {
+        $suffix = $index === 0 ? 'In goal' : 'Other goal';
+
+        Project::create([
+            'user_id' => $user->id,
+            'goal_id' => $target->id,
+            'title' => "{$suffix} project",
+            'description' => 'Project description',
+            'status' => 'active',
+            'start_date' => now()->toDateString(),
+            'target_date' => now()->addMonth()->toDateString(),
+        ]);
+        Opportunity::create(['user_id' => $user->id, 'goal_id' => $target->id, 'title' => "{$suffix} opp", 'description' => 'Desc', 'status' => 'new', 'source' => 'web', 'priority' => 'medium', 'estimated_value' => 'medium', 'next_action' => 'Call', 'due_date' => now()->addWeek()->toDateString()]);
+        Note::create(['user_id' => $user->id, 'title' => "{$suffix} note", 'content' => 'Body', 'goal_id' => $target->id]);
+        Resource::create(['user_id' => $user->id, 'title' => "{$suffix} resource", 'description' => 'Desc', 'url' => 'https://example.com', 'type' => 'article', 'goal_id' => $target->id]);
+        Todo::create([...todoPayload(['user_id' => $user->id, 'title' => "{$suffix} todo", 'goal_id' => $target->id])]);
+        LearningItem::create([...learningItemPayload(['user_id' => $user->id, 'title' => "{$suffix} learning", 'goal_id' => $target->id])]);
+    }
+
+    $this->get(route('goals.projects', $goal))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('goals/projects')
+            ->has('projects.data', 1)
+            ->where('projects.data.0.title', 'In goal project'));
+
+    $this->get(route('goals.opportunities', $goal))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('goals/opportunities')
+            ->has('opportunities.data', 1)
+            ->where('opportunities.data.0.title', 'In goal opp'));
+
+    $this->get(route('goals.notes', $goal))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('goals/notes')
+            ->has('notes.data', 1)
+            ->where('notes.data.0.title', 'In goal note'));
+
+    $this->get(route('goals.resources', $goal))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('goals/resources')
+            ->has('resources.data', 1)
+            ->where('resources.data.0.title', 'In goal resource'));
+
+    $this->get(route('goals.todos', $goal))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('goals/todos')
+            ->has('todos.data', 1)
+            ->where('todos.data.0.title', 'In goal todo'));
+
+    $this->get(route('goals.learning-items', $goal))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('goals/learning-items')
+            ->has('learningItems.data', 1)
+            ->where('learningItems.data.0.title', 'In goal learning'));
+});
+
+test('goal module tabs are forbidden for other users', function () {
+    $owner = createUser();
+    $otherUser = createUser();
+    $goal = createGoal($owner);
+    $this->actingAs($otherUser);
+
+    $this->get(route('goals.projects', $goal))->assertForbidden();
+    $this->get(route('goals.opportunities', $goal))->assertForbidden();
+    $this->get(route('goals.notes', $goal))->assertForbidden();
+    $this->get(route('goals.resources', $goal))->assertForbidden();
+    $this->get(route('goals.todos', $goal))->assertForbidden();
+    $this->get(route('goals.learning-items', $goal))->assertForbidden();
+});
+
+test('storing notes, resources and todos in goal context redirects to their goal tab', function () {
+    $user = createUser();
+    $goal = createGoal($user);
+    $this->actingAs($user);
+
+    $this->post(route('notes.store'), [
+        'title' => 'Goal note',
+        'content' => 'Body',
+        'goal_id' => $goal->id,
+        'context' => 'goal',
+    ])->assertRedirect(route('goals.notes', $goal));
+
+    $this->post(route('resources.store'), [
+        ...resourcePayload(),
+        'goal_id' => $goal->id,
+        'context' => 'goal',
+    ])->assertRedirect(route('goals.resources', $goal));
+
+    $this->post(route('todos.store'), [
+        ...todoPayload(),
+        'goal_id' => $goal->id,
+        'context' => 'goal',
+    ])->assertRedirect(route('goals.todos', $goal));
+});
+
+test('learning item overview exposes child module counts', function () {
+    $user = createUser();
+    $learningItem = createLearningItem($user);
+    $this->actingAs($user);
+
+    Todo::create([...todoPayload(['user_id' => $user->id, 'title' => 'Item todo', 'learning_item_id' => $learningItem->id])]);
+    Resource::create([...resourcePayload(['user_id' => $user->id, 'title' => 'Item resource', 'learning_item_id' => $learningItem->id])]);
+
+    $this->get(route('learning-items.show', $learningItem))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('learning-items/show')
+            ->where('learningItem.todos_count', 1)
+            ->where('learningItem.resources_count', 1));
+});
+
+test('learning item module tabs only list items for the learning item', function () {
+    $user = createUser();
+    $learningItem = createLearningItem($user);
+    $learningItem->update(['title' => 'In item']);
+    $otherItem = createLearningItem($user);
+    $otherItem->update(['title' => 'Other item']);
+    $this->actingAs($user);
+
+    foreach ([$learningItem, $otherItem] as $target) {
+        $suffix = $target->title;
+
+        Todo::create([...todoPayload(['user_id' => $user->id, 'title' => "{$suffix} todo", 'learning_item_id' => $target->id])]);
+        Resource::create([...resourcePayload(['user_id' => $user->id, 'title' => "{$suffix} resource", 'learning_item_id' => $target->id])]);
+    }
+
+    $this->get(route('learning-items.todos', $learningItem))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('learning-items/todos')
+            ->has('todos.data', 1)
+            ->where('todos.data.0.title', 'In item todo'));
+
+    $this->get(route('learning-items.resources', $learningItem))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('learning-items/resources')
+            ->has('resources.data', 1)
+            ->where('resources.data.0.title', 'In item resource'));
+});
+
+test('learning item module tabs are forbidden for other users', function () {
+    $owner = createUser();
+    $otherUser = createUser();
+    $learningItem = createLearningItem($owner);
+    $this->actingAs($otherUser);
+
+    $this->get(route('learning-items.todos', $learningItem))->assertForbidden();
+    $this->get(route('learning-items.resources', $learningItem))->assertForbidden();
 });

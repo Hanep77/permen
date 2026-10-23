@@ -45,10 +45,71 @@ class GoalController extends Controller
     {
         $this->authorize('view', $goal);
 
-        $goal->load(['projects', 'opportunities', 'notes', 'resources', 'todos', 'learningItems', 'user']);
-
         return Inertia::render('goals/show', [
-            'goal' => $goal,
+            'goal' => $this->goalWithCounts($goal),
+        ]);
+    }
+
+    public function projects(Goal $goal): Response
+    {
+        $this->authorize('view', $goal);
+
+        return Inertia::render('goals/projects', [
+            'goal' => $this->goalWithCounts($goal),
+            'projects' => $goal->projects()->latest()->paginate(10),
+        ]);
+    }
+
+    public function opportunities(Goal $goal): Response
+    {
+        $this->authorize('view', $goal);
+
+        return Inertia::render('goals/opportunities', [
+            'goal' => $this->goalWithCounts($goal),
+            'opportunities' => $goal->opportunities()->latest()->paginate(10),
+        ]);
+    }
+
+    public function notes(Goal $goal): Response
+    {
+        $this->authorize('view', $goal);
+
+        return Inertia::render('goals/notes', [
+            'goal' => $this->goalWithCounts($goal),
+            'notes' => $goal->notes()->latest()->paginate(10),
+        ]);
+    }
+
+    public function resources(Goal $goal): Response
+    {
+        $this->authorize('view', $goal);
+
+        return Inertia::render('goals/resources', [
+            'goal' => $this->goalWithCounts($goal),
+            'resources' => $goal->resources()->latest()->paginate(10),
+        ]);
+    }
+
+    public function todos(Goal $goal): Response
+    {
+        $this->authorize('view', $goal);
+
+        return Inertia::render('goals/todos', [
+            'goal' => $this->goalWithCounts($goal),
+            'todos' => $goal->todos()
+                ->with(['project', 'goal', 'learningItem'])
+                ->latest()
+                ->paginate(10),
+        ]);
+    }
+
+    public function learningItems(Goal $goal): Response
+    {
+        $this->authorize('view', $goal);
+
+        return Inertia::render('goals/learning-items', [
+            'goal' => $this->goalWithCounts($goal),
+            'learningItems' => $goal->learningItems()->latest()->paginate(10),
         ]);
     }
 
@@ -79,5 +140,11 @@ class GoalController extends Controller
 
         return redirect()->route('goals.index')
             ->with('success', 'Goal deleted successfully.');
+    }
+
+    private function goalWithCounts(Goal $goal): Goal
+    {
+        return $goal->load(['user'])
+            ->loadCount(['projects', 'opportunities', 'notes', 'resources', 'todos', 'learningItems']);
     }
 }

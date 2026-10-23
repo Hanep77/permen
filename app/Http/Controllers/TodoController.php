@@ -76,8 +76,8 @@ class TodoController extends Controller
 
         $parentTargets = [
             'project' => $todo->project_id ? ['projects.todos', $todo->project_id] : null,
-            'goal' => $todo->goal_id ? ['goals.show', $todo->goal_id] : null,
-            'learning_item' => $todo->learning_item_id ? ['learning-items.show', $todo->learning_item_id] : null,
+            'goal' => $todo->goal_id ? ['goals.todos', $todo->goal_id] : null,
+            'learning_item' => $todo->learning_item_id ? ['learning-items.todos', $todo->learning_item_id] : null,
         ];
 
         foreach (array_unique([$context, 'project', 'goal', 'learning_item']) as $key) {

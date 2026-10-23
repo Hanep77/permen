@@ -75,8 +75,8 @@ class ResourceController extends Controller
 
         $parentTargets = [
             'project' => $resource->project_id ? ['projects.resources', $resource->project_id] : null,
-            'goal' => $resource->goal_id ? ['goals.show', $resource->goal_id] : null,
-            'learning_item' => $resource->learning_item_id ? ['learning-items.show', $resource->learning_item_id] : null,
+            'goal' => $resource->goal_id ? ['goals.resources', $resource->goal_id] : null,
+            'learning_item' => $resource->learning_item_id ? ['learning-items.resources', $resource->learning_item_id] : null,
         ];
 
         foreach (array_unique([$context, 'project', 'goal', 'learning_item']) as $key) {
